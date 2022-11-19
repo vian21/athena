@@ -15,8 +15,8 @@ export default function users(
     });
 
     server.get("/:id", async (req: FastifyRequest, res: FastifyReply) => {
-        const userId = req.params.id;
-        logger.log(userId);
+        const userId = Number(req.params.id);
+
         res.send(await getUser(userId, db, logger));
     });
 
