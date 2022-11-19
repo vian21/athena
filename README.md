@@ -21,13 +21,15 @@ npm install
 3. ### Setting Environment variables
     Create a file called `.env` in the root folder and set `mysql` configurations.
 
-```js
+```sh
+PORT=3000
 DATABASE_URL = "mysql://USERNAME:PASSWORD@HOST:3306/DBNAME";
 ```
 
 Example
 
 ```sh
+PORT=3000
 DATABASE_URL = "mysql://root:@localhost:3306/app";
 ```
 
@@ -37,7 +39,7 @@ This would create a database called `app` using user `root` with password `NONE`
     We are using Prisma as our ORM(Object Relational Mapper) to provide an abstraction to the database and easy migrations
 
 ```sh
-npx prisma migrate dev
+npx prisma migrate dev --name init
 ```
 
 This will create the database you named in your `.env` file.
