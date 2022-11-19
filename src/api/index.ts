@@ -1,14 +1,10 @@
 import users from "@api/users";
-import db from "@api/plugins/db";
+// import { logger } from "@api/plugins/logger";
+import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 
-export default function api(server, opts: any, done: any) {
-    server.get("/", async (req, res) => {
-        const [result] = await db
-            .query("SELECT * FROM students")
-            .catch((): any => {
-                res.send("Hello");
-            });
-        return result;
+export default function api(server: FastifyInstance, opts: any, done: any) {
+    server.get("/", async (req: FastifyRequest, res: FastifyReply) => {
+        return "Welcome to the api";
     });
 
     server.register(users, { prefix: "/users" });

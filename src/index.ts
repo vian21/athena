@@ -1,5 +1,5 @@
 import "module-alias/register";
-import { fastify } from "fastify";
+import { fastify, FastifyRequest, FastifyReply } from "fastify";
 import * as dotenv from "dotenv";
 
 import api from "@api";
@@ -14,7 +14,7 @@ const PORT = Number(process.env.PORT); //get server port number
 const server = fastify({ logger: false });
 server.register(import("@fastify/compress"), { global: true });
 
-server.get("/", async (req, res) => {
+server.get("/", async (req: FastifyRequest, res: FastifyReply) => {
     res.status(200).send("It works");
 });
 
