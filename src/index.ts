@@ -2,7 +2,7 @@ import "module-alias/register";
 import { fastify, FastifyRequest, FastifyReply } from "fastify";
 import * as dotenv from "dotenv";
 
-import api from "@api";
+import api from "@api/index";
 
 dotenv.config();
 const PORT = Number(process.env.PORT); //get server port number
