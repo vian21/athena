@@ -23,14 +23,14 @@ npm install
 
 ```sh
 PORT=3000
-DATABASE_URL = "mysql://USERNAME:PASSWORD@HOST:3306/DBNAME";
+DATABASE_URL = "mysql://USERNAME:PASSWORD@HOST:3306/DBNAME"
 ```
 
 Example
 
 ```sh
 PORT=3000
-DATABASE_URL = "mysql://root:@localhost:3306/app";
+DATABASE_URL = "mysql://root:@localhost:3306/app"
 ```
 
 This would create a database called `app` using user `root` with password `NONE`(no password) at `localhost`
