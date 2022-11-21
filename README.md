@@ -26,14 +26,9 @@ PORT=3000
 DATABASE_URL = "mysql://USERNAME:PASSWORD@HOST:3306/DBNAME"
 ```
 
-Example
+Replace `USERNAME`, `PASSWORD`,`HOST`, `DBNAME` with your mysql server configurations
 
-```sh
-PORT=3000
-DATABASE_URL = "mysql://root:@localhost:3306/app"
-```
-
-This would create a database called `app` using user `root` with password `NONE`(no password) at `localhost`
+NOTE: Dont use a `#` in your password
 
 4. ### Setup database
     We are using Prisma as our ORM(Object Relational Mapper) to provide an abstraction to the database and easy migrations
