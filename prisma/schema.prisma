@@ -175,7 +175,7 @@ model users {
   user_id                                  Int                   @id @default(autoincrement())
   first_name                               String                @db.VarChar(255)
   last_name                                String?               @db.VarChar(255)
-  DOB                                      DateTime              @default(now()) @db.Date
+  DOB                                      DateTime              @db.Date
   gender                                   Int?                  @default(0)
   email                                    String?               @db.VarChar(255)
   tel                                      String?               @db.VarChar(15)
