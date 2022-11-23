@@ -9,19 +9,19 @@ datasource db {
 
 model academic_enrollment {
   id                 Int               @id @default(autoincrement())
-  user_id            Int?
+  student_id            Int?
   academic_period_id Int?
   grade              Int?
-  academic_periods   academic_periods? @relation(fields: [academic_period_id], references: [academic_period_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_academic_enrollment_academic_periods")
-  users              users?            @relation(fields: [user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_academic_enrollment_users")
+  academic_periods   academic_periods? @relation(fields: [academic_period_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_academic_enrollment_academic_periods")
+  users              users?            @relation(fields: [student_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_academic_enrollment_users")
 
   @@index([academic_period_id], map: "fk_academic_enrollment_academic_periods")
-  @@index([user_id], map: "fk_academic_enrollment_users")
+  @@index([student_id], map: "fk_academic_enrollment_users")
 }
 
 model academic_periods {
-  academic_period_id  Int                   @id @default(autoincrement())
-  star_date           DateTime?             @db.Date
+  id  Int                   @id @default(autoincrement())
+  start_date           DateTime?             @db.Date
   end_date            DateTime?             @db.Date
   type                Int?
   academic_enrollment academic_enrollment[]
@@ -38,55 +38,55 @@ model accounting {
   date               DateTime?         @db.Date
   item               String?           @db.VarChar(255)
   academic_period_id Int?
-  academic_periods   academic_periods? @relation(fields: [academic_period_id], references: [academic_period_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_accounting_academic_periods")
-  users              users             @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "fk_accounting_users")
+  academic_periods   academic_periods? @relation(fields: [academic_period_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_accounting_academic_periods")
+  users              users             @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "fk_accounting_users")
 
   @@index([academic_period_id], map: "fk_accounting_academic_periods")
   @@index([user_id], map: "fk_accounting_users")
 }
 
 model assessments {
-  assessment_id Int       @id @default(autoincrement())
+  id Int       @id @default(autoincrement())
   subject_id    Int?
   type          Int
-  subjects      subjects? @relation(fields: [subject_id], references: [subject_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_assessments_subject")
+  subjects      subjects? @relation(fields: [subject_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_assessments_subject")
 
   @@index([subject_id], map: "fk_assessments_subject")
 }
 
 model discipline {
   id                                  Int               @id @default(autoincrement())
-  user_id                             Int?
+  student_id                             Int?
   academic_period_id                  Int?
   points                              Int?
   infraction                          String?           @db.Text
   invigilator                         Int?
-  academic_periods                    academic_periods? @relation(fields: [academic_period_id], references: [academic_period_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_discipline_academic_periods")
-  users_discipline_invigilatorTousers users?            @relation("discipline_invigilatorTousers", fields: [invigilator], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_discipline_invigilator")
-  users_discipline_user_idTousers     users?            @relation("discipline_user_idTousers", fields: [user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_discipline_users")
+  academic_periods                    academic_periods? @relation(fields: [academic_period_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_discipline_academic_periods")
+  users_discipline_invigilatorTousers users?            @relation("discipline_invigilatorTousers", fields: [invigilator], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_discipline_invigilator")
+  users_discipline_user_idTousers     users?            @relation("discipline_user_idTousers", fields: [student_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_discipline_student")
 
   @@index([academic_period_id], map: "fk_discipline_academic_periods")
   @@index([invigilator], map: "fk_discipline_invigilator")
-  @@index([user_id], map: "fk_discipline_users")
+  @@index([student_id], map: "fk_discipline_student")
 }
 
 model grade {
   id                 Int      @id @default(autoincrement())
   school_id          Int?
   academic_period_id String?  @db.VarChar(20)
-  schools            schools? @relation(fields: [school_id], references: [school_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_grade_schools")
+  schools            schools? @relation(fields: [school_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_grade_schools")
 
   @@index([school_id], map: "fk_grade_schools")
 }
 
 model grading_scale {
-  id_grading_scale Int     @id @default(autoincrement())
+  id Int     @id @default(autoincrement())
   school_id        Int
   max              Int
   min              Int
   grade            String? @db.VarChar(2)
   gpa              Float?  @db.Float
-  schools          schools @relation(fields: [school_id], references: [school_id], onUpdate: Restrict, map: "fk_grading_scale_schools")
+  schools          schools @relation(fields: [school_id], references: [id], onUpdate: Restrict, map: "fk_grading_scale_schools")
 
   @@index([school_id], map: "fk_grading_scale_schools")
 }
@@ -94,32 +94,32 @@ model grading_scale {
 model marks {
   id                 Int               @id @default(autoincrement())
   subject_id         Int?
-  user_id            Int?
+  student_id            Int?
   mark               Float             @db.Float
   academic_period_id Int?
   assessment_id      Int?
-  academic_periods   academic_periods? @relation(fields: [academic_period_id], references: [academic_period_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_marks_academic_periods")
-  subjects           subjects?         @relation(fields: [subject_id], references: [subject_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_marks_subject")
-  users              users?            @relation(fields: [user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_marks_users")
+  academic_periods   academic_periods? @relation(fields: [academic_period_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_marks_academic_periods")
+  subjects           subjects?         @relation(fields: [subject_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_marks_subject")
+  users              users?            @relation(fields: [student_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_marks_students")
 
   @@index([academic_period_id], map: "fk_marks_academic_periods")
   @@index([subject_id], map: "fk_marks_subject")
-  @@index([user_id], map: "fk_marks_users")
+  @@index([student_id], map: "fk_marks_students")
 }
 
 model school_transactions {
-  school_transaction_id Int      @id @default(autoincrement())
+  id Int      @id @default(autoincrement())
   school_id             Int
   date                  DateTime @db.Date
   period                Int?
   end_date              DateTime @db.Date
-  schools               schools  @relation(fields: [school_id], references: [school_id], onUpdate: Restrict, map: "fk_school_transactions_schools")
+  schools               schools  @relation(fields: [school_id], references: [id], onUpdate: Restrict, map: "fk_school_transactions_schools")
 
   @@index([school_id], map: "fk_school_transactions_schools")
 }
 
 model schools {
-  school_id           Int                   @id @default(autoincrement())
+  id           Int                   @id @default(autoincrement())
   name                String                @db.VarChar(255)
   motto               String?               @db.VarChar(255)
   type                Int?
@@ -137,22 +137,22 @@ model schools {
 model subject_enrollment {
   subject_enrollment_id Int              @id @default(autoincrement())
   subject_id            Int
-  user_id               Int
+  student_id               Int
   academic_period_id    Int
   finished              Int?
-  academic_periods      academic_periods @relation(fields: [academic_period_id], references: [academic_period_id], onUpdate: Restrict, map: "fk_subject_enrollment_academic_periods")
-  subjects              subjects         @relation(fields: [subject_id], references: [subject_id], onUpdate: Restrict, map: "fk_subject_enrollment_subject")
-  users                 users            @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "fk_subject_enrollment_users")
+  academic_periods      academic_periods @relation(fields: [academic_period_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollment_academic_periods")
+  subjects              subjects         @relation(fields: [subject_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollment_subject")
+  users                 users            @relation(fields: [student_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollment_students")
 
   @@index([academic_period_id], map: "fk_subject_enrollment_academic_periods")
   @@index([subject_id], map: "fk_subject_enrollment_subject")
-  @@index([user_id], map: "fk_subject_enrollment_users")
+  @@index([student_id], map: "fk_subject_enrollment_students")
 }
 
 model subjects {
-  subject_id         Int                  @id @default(autoincrement())
+  id         Int                  @id @default(autoincrement())
   school_id          Int
-  user_id            Int?
+  teacher_id            Int?
   start              DateTime?            @db.Date
   end                DateTime?            @db.Date
   archived           Boolean?
@@ -161,18 +161,18 @@ model subjects {
   course_number      String?              @db.VarChar(5)
   name               String?              @db.VarChar(255)
   description        String?              @db.Text
-  schools            schools              @relation(fields: [school_id], references: [school_id], onUpdate: Restrict, map: "fk_subject_schools")
-  users              users?               @relation(fields: [user_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "fk_subject_users")
+  schools            schools              @relation(fields: [school_id], references: [id], onUpdate: Restrict, map: "fk_subject_schools")
+  users              users?               @relation(fields: [teacher_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_subject_teachers")
   assessments        assessments[]
   marks              marks[]
   subject_enrollment subject_enrollment[]
 
   @@index([school_id], map: "fk_subject_schools")
-  @@index([user_id], map: "fk_subject_users")
+  @@index([teacher_id], map: "fk_subject_teachers")
 }
 
 model users {
-  user_id                                  Int                   @id @default(autoincrement())
+  id                                  Int                   @id @default(autoincrement())
   first_name                               String                @db.VarChar(255)
   last_name                                String?               @db.VarChar(255)
   DOB                                      DateTime?             @db.Date
