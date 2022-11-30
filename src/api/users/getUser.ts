@@ -1,4 +1,4 @@
-import { DatabaseConnection, Logger } from "@api/plugins/interfaces";
+import { Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 /**
  * Get all app users
@@ -8,12 +8,12 @@ import { PrismaClient } from "@prisma/client";
  */
 export default async function getUser(userId: number, db, logger: Logger) {
     try {
-        const result = await db.users.findUnique({
+        const user = await db.users.findUnique({
             where: {
-                user_id: userId,
+                id: userId,
             },
         });
-        return result;
+        return user;
     } catch (error: any) {
         logger.log(error);
         return {};

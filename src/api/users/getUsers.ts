@@ -8,9 +8,9 @@ import { PrismaClientOptions } from "@prisma/client/runtime";
  */
 export default async function getUsers(db: any, logger: Logger) {
     try {
-        const result = await db.users.findMany();
+        const users = await db.users.findMany();
 
-        return result;
+        return users;
     } catch (error: any) {
         logger.log(error.message);
         return {};

@@ -1,7 +1,3 @@
-import { Pool } from "mysql2";
-
-export type DatabaseConnection = Pool;
-
 export interface User {
     id: number;
     first_name: string;

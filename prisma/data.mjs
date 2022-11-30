@@ -87,4 +87,134 @@ let users = [
         status: true, //1 for active, 0 for inactive
     },
 ];
-export { school, user, users };
+
+let gradingScale = [
+    {
+        max: 100,
+        min: 97,
+        gpa: 4.0,
+        grade: "A+",
+    },
+    {
+        max: 96,
+        min: 93,
+        gpa: 4.0,
+        grade: "A",
+    },
+    {
+        max: 90,
+        min: 92,
+        gpa: 3.7,
+        grade: "A-",
+    },
+    {
+        max: 89,
+        min: 87,
+        gpa: 3.3,
+        grade: "B+",
+    },
+    {
+        max: 86,
+        min: 83,
+        gpa: 3.0,
+        grade: "B",
+    },
+    {
+        max: 82,
+        min: 80,
+        gpa: 2.7,
+        grade: "B-",
+    },
+    {
+        max: 79,
+        min: 77,
+        gpa: 2.3,
+        grade: "C+",
+    },
+    {
+        max: 76,
+        min: 73,
+        gpa: 2.0,
+        grade: "C",
+    },
+    {
+        max: 72,
+        min: 70,
+        gpa: 1.7,
+        grade: "C-",
+    },
+    {
+        max: 69,
+        min: 67,
+        gpa: 1.3,
+        grade: "D+",
+    },
+    {
+        max: 66,
+        min: 63,
+        gpa: 1.0,
+        grade: "D",
+    },
+    {
+        max: 62,
+        min: 60,
+        gpa: 0.7,
+        grade: "D-",
+    },
+
+    {
+        max: 60,
+        min: 0,
+        gpa: 0.0,
+        grade: "F",
+    },
+];
+
+let subjects = [
+    {
+        teacher_id: faker.datatype.number({ min: 1, max: 10 }),
+        archived: faker.datatype.boolean(),
+        name: "English",
+        language: "English",
+        description: "Intro to english literature",
+        subject_code: "ENG",
+        course_number: String(faker.datatype.number()),
+    },
+    {
+        teacher_id: faker.datatype.number({ min: 1, max: 10 }),
+        archived: faker.datatype.boolean(),
+        name: "Math 1",
+        language: "English",
+        description: "Intro to calculus",
+        subject_code: "MAT",
+        course_number: String(faker.datatype.number()),
+    },
+    {
+        teacher_id: faker.datatype.number({ min: 1, max: 10 }),
+        archived: faker.datatype.boolean(),
+        name: "Physics 1",
+        language: "French",
+        description: "Intro to Physics",
+        subject_code: "PHY",
+        course_number: String(faker.datatype.number()),
+    },
+    {
+        teacher_id: faker.datatype.number({ min: 1, max: 10 }),
+        archived: faker.datatype.boolean(),
+        name: "Geography",
+        language: "English",
+        description: "Intro to Earth science",
+        subject_code: "GEO",
+        course_number: String(faker.datatype.number()),
+    },
+    {
+        teacher_id: faker.datatype.number({ min: 1, max: 10 }),
+        archived: faker.datatype.boolean(),
+        name: "Biology I",
+        language: "English",
+        description: "Intro to Anatomy",
+        subject_code: "BIO",
+        course_number: String(faker.datatype.number()),
+    },
+];
+export { gradingScale, school, subjects, user, users };

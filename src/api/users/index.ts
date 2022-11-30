@@ -11,7 +11,8 @@ export default function users(
     done: any
 ) {
     server.get("/", async (req: FastifyRequest, res: FastifyReply) => {
-        res.send(await getUsers(db, logger));
+        const users = await getUsers(db, logger);
+        res.send(users);
     });
 
     server.get("/:id", async (req: FastifyRequest, res: FastifyReply) => {

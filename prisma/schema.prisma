@@ -135,7 +135,7 @@ model schools {
 }
 
 model subject_enrollment {
-  subject_enrollment_id Int              @id @default(autoincrement())
+  id Int              @id @default(autoincrement())
   subject_id            Int
   student_id               Int
   academic_period_id    Int
