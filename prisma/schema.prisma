@@ -9,7 +9,7 @@ datasource db {
 
 model academic_enrollment {
   id                 Int               @id @default(autoincrement())
-  student_id            Int?
+  student_id         Int?
   academic_period_id Int?
   grade              Int?
   academic_periods   academic_periods? @relation(fields: [academic_period_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_academic_enrollment_academic_periods")
@@ -20,8 +20,8 @@ model academic_enrollment {
 }
 
 model academic_periods {
-  id  Int                   @id @default(autoincrement())
-  start_date           DateTime?             @db.Date
+  id                  Int                   @id @default(autoincrement())
+  start_date          DateTime?             @db.Date
   end_date            DateTime?             @db.Date
   type                Int?
   academic_enrollment academic_enrollment[]
@@ -46,17 +46,17 @@ model accounting {
 }
 
 model assessments {
-  id Int       @id @default(autoincrement())
-  subject_id    Int?
-  type          Int
-  subjects      subjects? @relation(fields: [subject_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_assessments_subject")
+  id         Int       @id @default(autoincrement())
+  subject_id Int?
+  type       Int
+  subjects   subjects? @relation(fields: [subject_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_assessments_subject")
 
   @@index([subject_id], map: "fk_assessments_subject")
 }
 
 model discipline {
   id                                  Int               @id @default(autoincrement())
-  student_id                             Int?
+  student_id                          Int?
   academic_period_id                  Int?
   points                              Int?
   infraction                          String?           @db.Text
@@ -80,13 +80,13 @@ model grade {
 }
 
 model grading_scale {
-  id Int     @id @default(autoincrement())
-  school_id        Int
-  max              Int
-  min              Int
-  grade            String? @db.VarChar(2)
-  gpa              Float?  @db.Float
-  schools          schools @relation(fields: [school_id], references: [id], onUpdate: Restrict, map: "fk_grading_scale_schools")
+  id        Int     @id @default(autoincrement())
+  school_id Int
+  max       Int
+  min       Int
+  grade     String? @db.VarChar(2)
+  gpa       Float?  @db.Float
+  schools   schools @relation(fields: [school_id], references: [id], onUpdate: Restrict, map: "fk_grading_scale_schools")
 
   @@index([school_id], map: "fk_grading_scale_schools")
 }
@@ -94,7 +94,7 @@ model grading_scale {
 model marks {
   id                 Int               @id @default(autoincrement())
   subject_id         Int?
-  student_id            Int?
+  student_id         Int?
   mark               Float             @db.Float
   academic_period_id Int?
   assessment_id      Int?
@@ -108,18 +108,18 @@ model marks {
 }
 
 model school_transactions {
-  id Int      @id @default(autoincrement())
-  school_id             Int
-  date                  DateTime @db.Date
-  period                Int?
-  end_date              DateTime @db.Date
-  schools               schools  @relation(fields: [school_id], references: [id], onUpdate: Restrict, map: "fk_school_transactions_schools")
+  id        Int      @id @default(autoincrement())
+  school_id Int
+  date      DateTime @db.Date
+  period    Int?
+  end_date  DateTime @db.Date
+  schools   schools  @relation(fields: [school_id], references: [id], onUpdate: Restrict, map: "fk_school_transactions_schools")
 
   @@index([school_id], map: "fk_school_transactions_schools")
 }
 
 model schools {
-  id           Int                   @id @default(autoincrement())
+  id                  Int                   @id @default(autoincrement())
   name                String                @db.VarChar(255)
   motto               String?               @db.VarChar(255)
   type                Int?
@@ -135,14 +135,14 @@ model schools {
 }
 
 model subject_enrollment {
-  id Int              @id @default(autoincrement())
-  subject_id            Int
-  student_id               Int
-  academic_period_id    Int
-  finished              Int?
-  academic_periods      academic_periods @relation(fields: [academic_period_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollment_academic_periods")
-  subjects              subjects         @relation(fields: [subject_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollment_subject")
-  users                 users            @relation(fields: [student_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollment_students")
+  id                 Int              @id @default(autoincrement())
+  subject_id         Int
+  student_id         Int
+  academic_period_id Int
+  finished           Int?
+  academic_periods   academic_periods @relation(fields: [academic_period_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollment_academic_periods")
+  subjects           subjects         @relation(fields: [subject_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollment_subject")
+  users              users            @relation(fields: [student_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollment_students")
 
   @@index([academic_period_id], map: "fk_subject_enrollment_academic_periods")
   @@index([subject_id], map: "fk_subject_enrollment_subject")
@@ -150,9 +150,9 @@ model subject_enrollment {
 }
 
 model subjects {
-  id         Int                  @id @default(autoincrement())
+  id                 Int                  @id @default(autoincrement())
   school_id          Int
-  teacher_id            Int?
+  teacher_id         Int?
   start              DateTime?            @db.Date
   end                DateTime?            @db.Date
   archived           Boolean?
@@ -172,11 +172,11 @@ model subjects {
 }
 
 model users {
-  id                                  Int                   @id @default(autoincrement())
+  id                                       Int                   @id @default(autoincrement())
   first_name                               String                @db.VarChar(255)
-  last_name                                String?               @db.VarChar(255)
+  last_name                                String                @db.VarChar(255)
   DOB                                      DateTime?             @db.Date
-  gender                                   Int?                  @default(0)
+  gender                                   Int                   @default(0)
   email                                    String?               @db.VarChar(255)
   tel                                      String?               @db.VarChar(15)
   address                                  String?               @db.VarChar(255)
