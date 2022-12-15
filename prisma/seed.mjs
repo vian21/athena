@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { gradingScale, school, subjects, user, users } from "./data.mjs";
 import bcrypt from "bcrypt";
-import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
 const fields = 5; //default number of dummy fields
@@ -14,10 +13,10 @@ const password = () => {
 };
 
 async function createMainUsers() {
-    password().then(async (hash) => {
-        users.map((user) => {
-            user.password = hash;
-        });
+    const hash = password();
+
+    users.map(async (user) => {
+        user.password = hash;
 
         await prisma.users.createMany({
             data: users,
