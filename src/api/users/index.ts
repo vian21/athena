@@ -10,10 +10,11 @@ interface User {
 }
 export default function users(
     server: FastifyInstance,
-    opts: object,
+    _opts: object,
     done: any
 ) {
     server.get("/", async (_req, res) => {
+
         res.send(await getUsers(db, logger));
     });
 
