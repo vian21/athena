@@ -1,17 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 import { Logger } from "@api/plugins/interfaces";
 
-export default async function deleteUser(userId: number, db: PrismaClient, logger: Logger) {
+export default async function deleteGrades(school_id: number, db: PrismaClient, logger: Logger) {
     try {
-        const user = await db.users.delete({
+        const Grades = await db.grade.delete({
             where: {
-                id: userId
+                id: school_id
             }
         });
-
         return { success: true };
     } catch (error: any) {
         logger.log(error.message);
-        return { error: "Error deleting user" };
+        return { error: "Error deleting the Grades" };
     }
 }

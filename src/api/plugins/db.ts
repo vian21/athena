@@ -1,3 +1,6 @@
+/**
+ * Database connection object
+ */
 import { PrismaClient } from "@prisma/client";
 
 const db = new PrismaClient();
