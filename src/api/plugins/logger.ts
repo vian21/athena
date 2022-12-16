@@ -4,7 +4,7 @@ const app = fastify({ logger: true });
 
 class logger {
     log(message: string): void {
-        app.log.info(message);
+        app.log.info(message); //Use pino logger
     }
 }
 
