@@ -3,7 +3,7 @@ import { Logger } from "@api/plugins/interfaces";
 
 export default async function deleteUser(userId: number, db: PrismaClient, logger: Logger) {
     try {
-        const user = await db.users.delete({
+        await db.users.delete({
             where: {
                 id: userId
             }

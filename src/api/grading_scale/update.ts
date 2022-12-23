@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 export default async function updateGradingscale(gradingScaleId: number, newData: object, db: PrismaClient, logger: Logger) {
     try {
-        const updateGradingscale = await db.grading_scale.update({
+        await db.grading_scale.update({
             where: {
                 id: gradingScaleId
             },

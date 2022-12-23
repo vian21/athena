@@ -24,29 +24,31 @@ export default function academicEnrollments(
         return await getAcademicEnrollments(db, logger);
     });
 
-    server.get<{ Params: EnrollmentId }>("/:id", async (req, res) => {
+    server.get<{ Params: EnrollmentId }>("/:id", async (req) => {
         const enrollmentId = Number(req.params.id);
+        if (isNaN(enrollmentId)) return {}
 
         return await getAcademicEnrollment(enrollmentId, db, logger);
     });
 
-    server.delete("/:id", async (req, res) => {
+    server.delete("/:id", async (req) => {
         const enrollmentId = Number(req.params.id);
+        if (isNaN(enrollmentId)) return {}
 
         return await deleteAcademicEnrollment(enrollmentId, db, logger);
     })
 
     server.patch("/:id", async (req, res) => {
-        //get the params
+
         const enrollmentId = Number(req.params.id);
         const newData = req.body;
-
+        if (isNaN(enrollmentId)) return {}
         return await updateAcademicEnrollment(enrollmentId, newData, db, logger);
 
     });
 
-    server.post("/", async (req, res) => {
-        //get params
+    server.post("/", async (req) => {
+
         const newData = req.body;
 
         return await newAcademicEnrollment(newData, db, logger)

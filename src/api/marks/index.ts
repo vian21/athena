@@ -5,7 +5,7 @@ import logger from "@api/plugins/logger";
 import { FastifyInstance } from "fastify";
 
 import { getMark, getMarks } from "./get";
-import updateMark from "./update";
+import { updateMark } from "./update";
 
 import deleteMark from "./delete";
 
@@ -20,31 +20,39 @@ export default function marks(
     _opts: object,
     done: any
 ) {
-    server.get("/", async (_req, res) => {
+    server.get("/", async () => {
 
         return await getMarks(db, logger);
     });
 
-    server.get<{ Params: MarkId }>("/:id", async (req, res) => {
+    server.get<{ Params: MarkId }>("/:id", async (req) => {
         const markId = Number(req.params.id);
+        if (isNaN(markId)) return {}
 
-        return await getMark(MarkId, db, logger);
+        return await getMark(markId, db, logger);
     });
 
-    server.delete("/:id", async (req, res) => {
+    server.delete("/:id", async (req) => {
         const markId = Number(req.params.id);
+        if (isNaN(markId)) return {}
 
         return await deleteMark(markId, db, logger);
     })
 
-    server.patch("/:id", async (req, res) => {
-        //get the params
+    server.patch("/:id", async (req) => {
+
         const markId = Number(req.params.id);
         const newData = req.body;
+        if (isNaN(markId)) return {}
 
         return await updateMark(markId, newData, db, logger);
 
     });
+    server.post("/", async (req) => {
+        const newData = req.body
+
+        return await newMark(newData, db, logger)
+    })
 
 
     done();

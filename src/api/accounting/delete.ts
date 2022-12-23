@@ -3,7 +3,7 @@ import { Logger } from "@api/plugins/interfaces";
 
 export default async function deleteAccounting(accountingId: number, db: PrismaClient, logger: Logger) {
     try {
-        const discipline = await db.discipline.delete({
+        await db.accounting.delete({
             where: {
                 id: accountingId
             }

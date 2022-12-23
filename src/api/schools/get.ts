@@ -6,7 +6,7 @@ async function getSchools(
     logger: Logger
 ): Promise<any> {
     try {
-        const schools = await db.schools.findMany({
+        return await db.schools.findMany({
             select: {
                 id: true,
                 name: true,
@@ -20,11 +20,10 @@ async function getSchools(
             },
         });
 
-        return schools;
     } catch (error: any) {
         logger.log(error.message);
 
-        return {};
+        return [];
     }
 }
 
@@ -35,7 +34,7 @@ async function getSchool(
     logger: Logger
 ) {
     try {
-        const school = await db.schools.findUnique({
+        return await db.schools.findUnique({
             where: {
                 id: schoolId,
             },
@@ -52,7 +51,6 @@ async function getSchool(
             },
         });
 
-        return school;
     } catch (error: any) {
         logger.log(error);
 
@@ -60,7 +58,7 @@ async function getSchool(
     }
 }
 
-export = {
+export {
     getSchools,
     getSchool
 }

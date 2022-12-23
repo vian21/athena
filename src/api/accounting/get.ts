@@ -6,7 +6,7 @@ async function getAccountings(
     logger: Logger
 ): Promise<any> {
     try {
-        const accounting = await db.accounting.findMany({
+        return await db.accounting.findMany({
             select: {
                 id: true,
                 user_id: true,
@@ -19,11 +19,11 @@ async function getAccountings(
             }
         });
 
-        return accounting;
+
     } catch (error: any) {
         logger.log(error.message);
 
-        return {};
+        return [];
     }
 }
 async function getAccounting(
@@ -32,7 +32,7 @@ async function getAccounting(
     logger: Logger
 ) {
     try {
-        const accountings = await db.accounting.findUnique({
+        return await db.accounting.findUnique({
             where: {
                 id: accountingId,
             },
@@ -48,7 +48,7 @@ async function getAccounting(
             },
         });
 
-        return accountings;
+
     } catch (error: any) {
         logger.log(error);
 

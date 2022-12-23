@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 export default async function updateAccounting(accountingId: number, newData: object, db: PrismaClient, logger: Logger) {
     try {
-        const updateAccounting = await db.accounting.update({
+        await db.accounting.update({
             where: {
                 id: accountingId
             },

@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 async function updateSubject(subjectId: number, newData: object, db: PrismaClient, logger: Logger) {
     try {
-        const updateSubject = await db.subjects.update({
+        await db.subjects.update({
             where: {
                 id: subjectId
             },

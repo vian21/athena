@@ -2,7 +2,6 @@ import db from "@api/plugins/db";
 import logger from "@api/plugins/logger";
 
 import { getSubjectEnrollments, getSubjectEnrollment } from "./get";
-import { updatesubjectEnrollments } from "./update";
 
 import { FastifyInstance } from "fastify";
 import deleteSubjectEnrollment from "./delete";
@@ -17,31 +16,35 @@ export default function subjectEnrollments(
     _opts: object,
     done: any
 ) {
-    server.get("/", async (_req, res) => {
+    server.get("/", async () => {
 
-        res.send(await getSubjectEnrollments(db, logger));
+        return await getSubjectEnrollments(db, logger);
     });
 
-    server.get<{ Params: subject_id }>("/:id", async (req, res) => {
+    server.get<{ Params: subject_id }>("/:id", async (req) => {
         const subject_id = Number(req.params.id);
+        if (isNaN(subject_id)) return {}
 
-        res.send(await getSubjectEnrollment(subject_id, db, logger));
+        return await getSubjectEnrollment(subject_id, db, logger);
     });
 
-    server.delete("/:id", async (req, res) => {
+    server.delete("/:id", async (req) => {
         const subject_id = Number(req.params.id);
+        if (isNaN(subject_id)) return {}
 
         return await deleteSubjectEnrollment(subject_id, db, logger);
     });
 
-    server.patch("/:id/:name", async (req, res) => {
-        //get the params
+    server.patch("/:id", async (req) => {
+
         const subject_id = Number(req.params.id);
         const body = req.body;
+        if (isNaN(subject_id)) return {}
 
+        return await updatesubjectEnrollments(subject_id, newData, db, logger);
     });
 
-    server.post("/", async (req, res) => {
+    server.post("/", async (req) => {
         //get the params
         const newData = req.body;
 

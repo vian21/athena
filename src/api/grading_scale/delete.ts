@@ -3,7 +3,7 @@ import { Logger } from "@api/plugins/interfaces";
 
 export default async function deletegrading_scale(gradingscaleId: number, db: PrismaClient, logger: Logger) {
     try {
-        const grading_scale = await db.grading_scale.delete({
+        await db.grading_scale.delete({
             where: {
                 id: gradingscaleId
             }

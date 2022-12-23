@@ -17,36 +17,35 @@ export default function subjects(
     _opts: object,
     done: any
 ) {
-    server.get("/", async (_req, res) => {
+    server.get("/", async () => {
 
         return await getSubjects(db, logger);
     });
 
-    server.get<{ Params: SubjectId }>("/:id", async (req, res) => {
+    server.get<{ Params: SubjectId }>("/:id", async (req) => {
         const subjectId = Number(req.params.id);
+        if (isNaN(subjectId)) return {}
 
         return await getSubject(subjectId, db, logger);
     });
 
-    server.patch("/:id", async (req, res) => {
-        //get the params
+    server.patch("/:id", async (req) => {
         const subjectId = Number(req.params.id);
         const newData = req.body;
+        if (isNaN(subjectId)) return {}
 
         return await updateSubject(subjectId, newData, db, logger);
     });
 
     server.post("/", async (req) => {
-        //get params
         const newData = req.body;
 
         return await insertSubject(newData, db, logger)
     })
 
-    server.delete("/:id", async (req, res) => {
-        // get params
+    server.delete("/:id", async (req) => {
         const subjectId = Number(req.params.id)
-
+        if (isNaN(subjectId)) return {}
         return await deleteSubject(subjectId, db, logger)
     })
 

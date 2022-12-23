@@ -26,6 +26,7 @@ export default function academicPeriods(
 
     server.get<{ Params: AcademicsId }>("/:id", async (req) => {
         const periodId = Number(req.params.id);
+        if (isNaN(periodId)) return {}
 
         return await getAcademicPeriod(periodId, db, logger);
     });
@@ -33,20 +34,23 @@ export default function academicPeriods(
     server.delete("/:id", async (req) => {
         const periodId = Number(req.params.id);
 
+        if (isNaN(periodId)) return {}
+
         return await deleteAcademicPeriod(periodId, db, logger);
     })
 
-    server.patch("/:id", async (req, res) => {
-        //get the params
+    server.patch("/:id", async (req) => {
+
         const PeriodId = Number(req.params.id);
         const newData = req.body;
+
+        if (isNaN(PeriodId)) return {}
 
         return await updateAcademicPeriod(PeriodId, newData, db, logger);
 
     });
 
     server.post("/", async (req, res) => {
-        //get params
         const newData = req.body;
 
         return await newAcademicPeriod(newData, db, logger)
