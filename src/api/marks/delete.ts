@@ -3,7 +3,7 @@ import { Logger } from "@api/plugins/interfaces";
 
 export default async function deleteMark(markId: number, db: PrismaClient, logger: Logger) {
     try {
-        const mark = await db.marks.delete({
+        await db.marks.delete({
             where: {
                 id: markId
             }

@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 async function updateSchool(schoolId: number, newData: object, db: PrismaClient, logger: Logger) {
     try {
-        const updateSchool = await db.schools.update({
+        await db.schools.update({
             where: {
                 id: schoolId
             },
@@ -17,6 +17,6 @@ async function updateSchool(schoolId: number, newData: object, db: PrismaClient,
         return {};
     }
 }
-export = {
+export {
     updateSchool
 }

@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 async function updateSchoolTransaction(transactionId: number, newData: object, db: PrismaClient, logger: Logger) {
     try {
-        const transaction = await db.school_transactions.update({
+        await db.school_transactions.update({
             where: {
                 id: transactionId
             },

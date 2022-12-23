@@ -16,34 +16,39 @@ export default function users(
     _opts: object,
     done: any
 ) {
-    server.get("/", async (_req, res) => {
+    server.get("/", async () => {
 
         return await getUsers(db, logger);
     });
 
-    server.get<{ Params: User }>("/:id", async (req, res) => {
+    server.get<{ Params: User }>("/:id", async (req) => {
         const userId = Number(req.params.id);
+
+        if (isNaN(userId)) return {}
+
 
         return await getUser(userId, db, logger);
     });
 
-    server.delete("/:id", async () => {
+    server.delete("/:id", async (req) => {
         const userId = Number(req.params.id);
+        if (isNaN(userId)) return {}
 
         return await deleteUser(userId, db, logger);
     })
 
     server.patch("/:id", async (req) => {
-        //get the params
+
         const userId = Number(req.params.id);
         const newData = req.body;
+        if (isNaN(userId)) return {}
 
         return await updateUser(userId, newData, db, logger);
 
     });
 
-    server.post("/", async (req, res) => {
-        //get the params
+    server.post("/", async (req) => {
+
         const newData = req.body;
 
         return await newUser(newData, db, logger);

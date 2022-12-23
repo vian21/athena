@@ -6,7 +6,7 @@ async function getSubjects(
     logger: Logger
 ): Promise<any> {
     try {
-        const subjects = await db.subjects.findMany({
+        return await db.subjects.findMany({
             select: {
                 id: true,
                 school_id: true,
@@ -22,11 +22,11 @@ async function getSubjects(
             },
         });
 
-        return subjects;
+
     } catch (error: any) {
         logger.log(error.message);
 
-        return {};
+        return [];
     }
 }
 
@@ -37,7 +37,7 @@ async function getSubject(
     logger: Logger
 ) {
     try {
-        const subject = await db.subjects.findUnique({
+        return await db.subjects.findUnique({
             where: {
                 id: subjectId,
             },
@@ -57,7 +57,7 @@ async function getSubject(
             },
         });
 
-        return subject;
+
     } catch (error: any) {
         logger.log(error);
 

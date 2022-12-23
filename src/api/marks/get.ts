@@ -1,5 +1,24 @@
+
 import { Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
+
+
+
+
+async function getMarks(
+    db: PrismaClient,
+    logger: Logger
+): Promise<any> {
+    try {
+        return await db.marks.findMany();
+
+
+    } catch (error: any) {
+        logger.log(error.message);
+
+        return [];
+    }
+}
 
 async function getMark(
     markId: number,
@@ -7,7 +26,7 @@ async function getMark(
     logger: Logger
 ) {
     try {
-        const mark = await db.marks.findUnique({
+        return await db.marks.findUnique({
             where: {
                 id: markId,
             },
@@ -21,30 +40,13 @@ async function getMark(
             },
         });
 
-        return mark;
+
     } catch (error: any) {
         logger.log(error);
 
         return {};
     }
 }
-
-
-async function getMarks(
-    db: PrismaClient,
-    logger: Logger
-): Promise<any> {
-    try {
-        const marks = await db.marks.findMany();
-
-        return marks;
-    } catch (error: any) {
-        logger.log(error.message);
-
-        return {};
-    }
-}
-
 export {
     getMark,
     getMarks,

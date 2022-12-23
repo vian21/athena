@@ -22,20 +22,20 @@ export default function schools(
 
     });
 
-    server.get<{ Params: SchoolId }>("/:id", async (req, res) => {
+    server.get<{ Params: SchoolId }>("/:id", async (req) => {
         const schoolId = Number(req.params.id);
 
         return await getSchool(schoolId, db, logger);
     });
 
-    server.delete("/:id", async (req, res) => {
+    server.delete("/:id", async (req) => {
         const schoolId = Number(req.params.id);
 
         return await deleteSchool(schoolId, db, logger);
     })
 
-    server.patch("/:id", async (req, res) => {
-        //get the params
+    server.patch("/:id", async (req) => {
+
         const schoolId = Number(req.params.id);
         const newData = req.body;
 
@@ -44,7 +44,7 @@ export default function schools(
     });
 
     server.post("/", async (req, res) => {
-        //get the params
+
         const newData = req.body;
 
         return await newSchool(newData, db, logger);

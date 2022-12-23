@@ -17,25 +17,25 @@ export default function schoolTransactions(
     _opts: object,
     done: any
 ) {
-    server.get("/", async (_req, res) => {
+    server.get("/", async () => {
 
-        res.send(await getSchoolTransactions(db, logger));
+        return await getSchoolTransactions(db, logger);
     });
 
-    server.get<{ Params: school_id }>("/:id", async (req, res) => {
+    server.get<{ Params: school_id }>("/:id", async (req) => {
         const school_id = Number(req.params.id);
 
-        res.send(await getSchoolTransaction(school_id, db, logger));
+        return await getSchoolTransaction(school_id, db, logger);
     });
 
-    server.delete("/:id", async (req, res) => {
+    server.delete("/:id", async (req) => {
         const school_id = Number(req.params.id);
 
         return await deleteSchoolTransactions(school_id, db, logger);
     })
 
     server.patch("/:id", async (req) => {
-        //get the params
+
         const transactionId = Number(req.params.id);
         const newData = req.body;
 
@@ -43,8 +43,8 @@ export default function schoolTransactions(
 
     });
 
-    server.post("/", async (req, res) => {
-        //get the params
+    server.post("/", async (req) => {
+
         const newData = req.body;
 
         return await newschoolTransaction(newData, db, logger);

@@ -13,7 +13,7 @@ import subjects from "./subjects";
 import academics from "./academic_period";
 import accounting from "./accounting";
 import schoolTransactions from "./school_transactions";
-import Grades from "./grade";
+import Grades from "./grades";
 import academicEnrollments from "./academic_enrollment";
 import academicPeriods from "./academic_period";
 
@@ -36,7 +36,7 @@ export default function api(server: FastifyInstance, opts: any, done: any) {
     server.register(academics, { prefix: "/academics" });
     server.register(accounting, { prefix: "/accounting" });
     server.register(schoolTransactions, { prefix: "/school_transactions" })
-    server.register(Grades, { prefix: "/grade" });
+    server.register(Grades, { prefix: "/grades" });
     server.register(academicEnrollments, { prefix: "/academic_enrollments" });
     server.register(academicPeriods, { prefix: "/academic_periods" });
 

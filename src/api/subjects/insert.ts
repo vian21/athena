@@ -3,12 +3,12 @@ import { PrismaClient } from "@prisma/client";
 
 
 
-export default async function insertSubject(subjectObject, db: PrismaClient, logger: Logger) {
+export default async function insertSubject(newData: any, db: PrismaClient, logger: Logger) {
     try {
-        console.log(subjectObject)
-        const subject = await db.subjects.create({
-            data: subjectObject,
+        await db.subjects.create({
+            data: newData,
         })
+
         return { success: true }
     }
     catch (error: any) {
@@ -17,5 +17,3 @@ export default async function insertSubject(subjectObject, db: PrismaClient, log
     }
 
 }
-
-

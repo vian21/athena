@@ -16,32 +16,34 @@ export default function discipline(
     _opts: object,
     done: any
 ) {
-    server.get("/", async (_req, res) => {
+    server.get("/", async () => {
 
         return await getDisciplineRecords(db, logger)
     });
 
-    server.get<{ Params: disciplineId }>("/:id", async (req, res) => {
+    server.get<{ Params: disciplineId }>("/:id", async (req) => {
         const disciplineId = Number(req.params.id);
+        if (isNaN(disciplineId)) return {}
 
-        res.send(await getDisciplineRecord(disciplineId, db, logger));
+        return await getDisciplineRecord(disciplineId, db, logger);
     });
 
-    server.patch("/:id", async (req, res) => {
-        //get the params
+    server.patch("/:id", async (req) => {
         const disciplineId = Number(req.params.id);
         const newData = req.body;
+        if (isNaN(disciplineId)) return {}
 
         return await updateDiscipline(disciplineId, newData, db, logger);
     });
 
-    server.delete("/:id", async (req, res) => {
+    server.delete("/:id", async (req) => {
         const disciplineId = Number(req.params.id);
+        if (isNaN(disciplineId)) return {}
 
-        res.send(await deleteDiscipline(disciplineId, db, logger));
+        return await deleteDiscipline(disciplineId, db, logger);
     })
 
-    server.post("/", async (req, res) => {
+    server.post("/", async (req) => {
         //get the params
         const newData = req.body;
 

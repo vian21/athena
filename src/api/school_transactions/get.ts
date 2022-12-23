@@ -6,7 +6,7 @@ async function getSchoolTransactions(
     logger: Logger
 ): Promise<any> {
     try {
-        const schoolTransactions = await db.school_transactions.findMany({
+        return await db.school_transactions.findMany({
             select: {
                 id: true,
                 school_id: true,
@@ -16,11 +16,11 @@ async function getSchoolTransactions(
             }
         });
 
-        return schoolTransactions;
+
     } catch (error: any) {
         logger.log(error.message);
 
-        return {};
+        return [];
     }
 }
 
@@ -31,7 +31,7 @@ async function getSchoolTransaction(
     logger: Logger
 ) {
     try {
-        const school = await db.school_transactions.findUnique({
+        return await db.school_transactions.findUnique({
             where: {
                 id: school_id,
             },
@@ -44,7 +44,7 @@ async function getSchoolTransaction(
             },
         });
 
-        return school;
+
     } catch (error: any) {
         logger.log(error);
 

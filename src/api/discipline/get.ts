@@ -6,7 +6,7 @@ async function getDisciplineRecords(
     logger: Logger
 ): Promise<any> {
     try {
-        const discipline = await db.discipline.findMany({
+        return await db.discipline.findMany({
             select: {
                 id: true,
                 student_id: true,
@@ -16,11 +16,11 @@ async function getDisciplineRecords(
             }
         });
 
-        return discipline;
+
     } catch (error: any) {
         logger.log(error.message);
 
-        return {};
+        return [];
     }
 }
 async function getDisciplineRecord(
@@ -29,7 +29,7 @@ async function getDisciplineRecord(
     logger: Logger
 ) {
     try {
-        const disciplines = await db.discipline.findUnique({
+        return await db.discipline.findUnique({
             where: {
                 id: schoolId,
             },
@@ -43,7 +43,6 @@ async function getDisciplineRecord(
             },
         });
 
-        return disciplines;
     } catch (error: any) {
         logger.log(error);
 

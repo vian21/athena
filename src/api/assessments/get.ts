@@ -6,7 +6,7 @@ async function getAssessments(
     logger: Logger
 ): Promise<any> {
     try {
-        const assessments = await db.assessments.findMany({
+        return await db.assessments.findMany({
             select: {
                 id: true,
                 subject_id: true,
@@ -14,11 +14,10 @@ async function getAssessments(
             }
         });
 
-        return assessments;
     } catch (error: any) {
         logger.log(error.message);
 
-        return {};
+        return [];
     }
 }
 
@@ -29,7 +28,7 @@ async function getAssessment(
     logger: Logger
 ) {
     try {
-        const assessment = await db.assessments.findUnique({
+        return await db.assessments.findUnique({
             where: {
                 id: schoolId,
             },
@@ -41,7 +40,6 @@ async function getAssessment(
             },
         });
 
-        return assessment;
     } catch (error: any) {
         logger.log(error);
 

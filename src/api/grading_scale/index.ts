@@ -16,32 +16,33 @@ export default function gradingScale(
     _opts: object,
     done: any
 ) {
-    server.get("/", async (_req, res) => {
+    server.get("/", async () => {
 
         return await getGradingscales(db, logger)
     });
 
-    server.get<{ Params: grading_scaleId }>("/:id", async (req, res) => {
+    server.get<{ Params: grading_scaleId }>("/:id", async (req) => {
         const grading_scaleId = Number(req.params.id);
+        if (isNaN(grading_scaleId)) return {}
 
-        res.send(await getGradingscale(grading_scaleId, db, logger));
+        return await getGradingscale(grading_scaleId, db, logger);
     });
-    server.delete("/:id", async (req, res) => {
+    server.delete("/:id", async (req) => {
         const gradingscaleId = Number(req.params.id);
+        if (isNaN(gradingscaleId)) return {}
 
-        res.send(await deletegrading_scale(gradingscaleId, db, logger));
+        return await deletegrading_scale(gradingscaleId, db, logger);
     })
-    server.post("/", async (req, res) => {
-        //get the params
+    server.post("/", async (req) => {
         const newData = req.body;
 
         return await newGradingscale(newData, db, logger);
 
     });
-    server.patch("/:id", async (req, res) => {
-        //get the params
+    server.patch("/:id", async (req) => {
         const grading_scaleId = Number(req.params.id);
         const newData = req.body;
+        if (isNaN(grading_scaleId)) return {}
 
         return await updateGradingscale(grading_scaleId, newData, db, logger);
 

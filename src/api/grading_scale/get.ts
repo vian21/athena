@@ -6,7 +6,7 @@ async function getGradingscales(
     logger: Logger
 ): Promise<any> {
     try {
-        const gradingscale = await db.grading_scale.findMany({
+        return await db.grading_scale.findMany({
             select: {
                 id: true,
                 min: true,
@@ -15,11 +15,10 @@ async function getGradingscales(
             }
         });
 
-        return gradingscale;
     } catch (error: any) {
         logger.log(error.message);
 
-        return {};
+        return [];
     }
 }
 async function getGradingscale(
@@ -28,7 +27,7 @@ async function getGradingscale(
     logger: Logger
 ) {
     try {
-        const gradingscales = await db.grading_scale.findUnique({
+        return await db.grading_scale.findUnique({
             where: {
                 id: grading_scaleId,
             },
@@ -42,7 +41,7 @@ async function getGradingscale(
             },
         });
 
-        return gradingscales;
+
     } catch (error: any) {
         logger.log(error);
 

@@ -6,7 +6,7 @@ async function getGrades(
     logger: Logger
 ): Promise<any> {
     try {
-        const Grades = await db.grade.findMany({
+        return await db.grade.findMany({
             select: {
                 id: true,
                 school_id: true,
@@ -15,24 +15,24 @@ async function getGrades(
             }
         });
 
-        return Grades;
+
     } catch (error: any) {
         logger.log(error.message);
 
-        return {};
+        return [];
     }
 }
 
 
 async function getGrade(
-    school_id: number,
+    grade_id: number,
     db: PrismaClient,
     logger: Logger
 ) {
     try {
-        const Grade = await db.grade.findUnique({
+        return await db.grade.findUnique({
             where: {
-                id: school_id,
+                id: grade_id,
             },
             select: {
                 id: true,
@@ -42,14 +42,13 @@ async function getGrade(
             },
         });
 
-        return Grade;
     } catch (error: any) {
         logger.log(error);
 
         return {};
     }
 }
-export = {
+export {
     getGrades,
     getGrade
 }

@@ -17,36 +17,38 @@ export default function assessments(
     _opts: object,
     done: any
 ) {
-    server.get("/", async (_req, res) => {
+    server.get("/", async () => {
 
         return await getAssessments(db, logger);
     });
 
-    server.get<{ Params: AssessmentId }>("/:id", async (req, res) => {
+    server.get<{ Params: AssessmentId }>("/:id", async (req) => {
         const assessmentId = Number(req.params.id);
+        if (isNaN(assessmentId)) return {}
 
         return await getAssessment(assessmentId, db, logger);
     });
 
-    server.patch("/:id", async (req, res) => {
-        //get the params
+    server.patch("/:id", async (req) => {
+
         const assessmentId = Number(req.params.id);
         const newData = req.body;
+        if (isNaN(assessmentId)) return {}
 
         return await updateAssessment(assessmentId, newData, db, logger);
 
     });
 
-    server.post("/", async (req, res) => {
-        //get params
+    server.post("/", async (req) => {
+
         const newData = req.body;
 
         return await insertAssessment(newData, db, logger)
     })
 
-    server.delete("/:id", async (req, res) => {
-        // get params
+    server.delete("/:id", async (req) => {
         const assessmentId = Number(req.params.id)
+        if (isNaN(assessmentId)) return {}
 
         return await deleteAssessment(assessmentId, db, logger)
     })

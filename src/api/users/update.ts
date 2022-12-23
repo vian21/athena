@@ -1,9 +1,18 @@
 import { Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-async function updateUser(userId: number, newData: object, db: PrismaClient, logger: Logger) {
+/*
+ * Updates a user field(s)
+ * @param {number} userId - user's id
+ * @param {object} newData - object with the field(s) to update and their new values
+ * @param {object} db - database object
+ * @param {object} logger- logging object
+ * @returns {object} - success or error object
+ *
+ */
+export default async function updateUser(userId: number, newData: object, db: PrismaClient, logger: Logger) {
     try {
-        const updateUser = await db.users.update({
+        await db.users.update({
             where: {
                 id: userId
             },
@@ -16,7 +25,4 @@ async function updateUser(userId: number, newData: object, db: PrismaClient, log
 
         return {};
     }
-}
-export = {
-    updateUser
 }

@@ -3,7 +3,7 @@ import { Logger } from "@api/plugins/interfaces";
 
 export default async function deleteGrades(school_id: number, db: PrismaClient, logger: Logger) {
     try {
-        const Grades = await db.grade.delete({
+        await db.grade.delete({
             where: {
                 id: school_id
             }

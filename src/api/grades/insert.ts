@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 export default async function newGrade(GradeObject: any, db: PrismaClient, logger: Logger) {
     try {
 
-        const Grade = await db.grade.create({
+        await db.grade.create({
             data: GradeObject,
         })
         return { success: true }

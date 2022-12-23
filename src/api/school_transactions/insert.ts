@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 export default async function newschoolTransaction(schoolTransactionObject: any, db: PrismaClient, logger: Logger) {
     try {
 
-        const schoolTransaction = await db.school_transactions.create({
+        await db.school_transactions.create({
             data: schoolTransactionObject,
         })
         return { success: true }
