@@ -1,15 +1,13 @@
-import { getUsers, getUser } from "./get";
+import { FastifyInstance } from "fastify";
 import db from "@api/plugins/db";
 import logger from "@api/plugins/logger";
 
-import { FastifyInstance } from "fastify";
+import { IParamsId, userSchema, User } from "@api/plugins/interfaces";
+
+import { getUsers, getUser } from "./get";
 import newUser from "./insert";
 import deleteUser from "./deleteUser";
 import updateUser from "./update";
-
-interface User {
-    id: number;
-}
 
 export default function users(
     server: FastifyInstance,
@@ -21,7 +19,7 @@ export default function users(
         return await getUsers(db, logger);
     });
 
-    server.get<{ Params: User }>("/:id", async (req) => {
+    server.get<{ Params: IParamsId }>("/:id", async (req) => {
         const userId = Number(req.params.id);
 
         if (isNaN(userId)) return {}
@@ -30,29 +28,46 @@ export default function users(
         return await getUser(userId, db, logger);
     });
 
-    server.delete("/:id", async (req) => {
+    server.delete<{ Params: IParamsId }>("/:id", async (req) => {
         const userId = Number(req.params.id);
+
         if (isNaN(userId)) return {}
 
         return await deleteUser(userId, db, logger);
     })
 
-    server.patch("/:id", async (req) => {
+    server.patch<{ Params: IParamsId, Body: User }>("/:id", async (req) => {
 
         const userId = Number(req.params.id);
-        const newData = req.body;
-        if (isNaN(userId)) return {}
 
-        return await updateUser(userId, newData, db, logger);
 
+        if (isNaN(userId)) return { error: "Invalid user id" }
+
+        try {
+            //parse the body to make sure it matches the schema
+            const newData = userSchema.parse(req.body);
+
+            return await updateUser(userId, newData, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     });
 
     server.post("/", async (req) => {
 
-        const newData = req.body;
+        try {
+            const newData = userSchema.required({
+                first_name: true,
+                last_name: true,
+                DOB: true,
+                gender: true,
+                account_type: true
+            }).parse(req.body);
 
-        return await newUser(newData, db, logger);
-
+            return await newUser(newData, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     });
 
     done();
