@@ -8,9 +8,11 @@ export default async function deleteSubject(subjectId: number, db: PrismaClient,
                 id: subjectId
             }
         });
+
         return { success: true };
     } catch (error: any) {
         logger.log(error.message);
+
         return { error: "Error deleting subject" };
     }
 }

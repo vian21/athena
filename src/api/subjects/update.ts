@@ -1,7 +1,7 @@
 import { Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-async function updateSubject(subjectId: number, newData: object, db: PrismaClient, logger: Logger) {
+export default async function updateSubject(subjectId: number, newData: object, db: PrismaClient, logger: Logger) {
     try {
         await db.subjects.update({
             where: {
@@ -17,6 +17,4 @@ async function updateSubject(subjectId: number, newData: object, db: PrismaClien
         return { Error: "cannot update a subject" };
     }
 }
-export {
-    updateSubject
-}
+

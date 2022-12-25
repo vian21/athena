@@ -49,6 +49,7 @@ async function getUser(
         return {};
     }
 }
+
 export {
     getUsers,
     getUser
