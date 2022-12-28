@@ -1,16 +1,13 @@
+import { FastifyInstance } from "fastify";
+
 import db from "@api/plugins/db";
 import logger from "@api/plugins/logger";
 
+import { IParamsId, IParamsIdSchema, schoolTransactionSchema, schoolTransaction } from "@api/plugins/interfaces"
 import { getSchoolTransactions, getSchoolTransaction } from "./get";
 import { updateSchoolTransaction } from "./update";
-
-import { FastifyInstance } from "fastify";
 import deleteSchoolTransactions from "./delete";
 import newschoolTransaction from "./insert";
-
-interface school_id {
-    id: number;
-}
 
 export default function schoolTransactions(
     server: FastifyInstance,
@@ -22,32 +19,51 @@ export default function schoolTransactions(
         return await getSchoolTransactions(db, logger);
     });
 
-    server.get<{ Params: school_id }>("/:id", async (req) => {
-        const school_id = Number(req.params.id);
+    server.get<{ Params: IParamsId }>("/:id", async (req) => {
+        try {
+            const transactionId = IParamsIdSchema.parse(req.params).id;
 
-        return await getSchoolTransaction(school_id, db, logger);
+            return await getSchoolTransaction(transactionId, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
+
     });
 
-    server.delete("/:id", async (req) => {
-        const school_id = Number(req.params.id);
+    server.delete<{ Params: IParamsId }>("/:id", async (req) => {
+        try {
+            const transactionId = IParamsIdSchema.parse(req.params).id;
 
-        return await deleteSchoolTransactions(school_id, db, logger);
+            return await deleteSchoolTransactions(transactionId, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     })
 
-    server.patch("/:id", async (req) => {
+    server.patch<{ Params: IParamsId, Body: schoolTransaction }>("/:id", async (req) => {
 
-        const transactionId = Number(req.params.id);
-        const newData = req.body;
 
-        return await updateSchoolTransaction(transactionId, newData, db, logger);
+        try {
+            const transactionId = schoolTransactionSchema.required({ id: true }).parse(req.params).id;
+            const newData = schoolTransactionSchema.omit({ id: true }).parse(req.body);
 
+            return await updateSchoolTransaction(transactionId, newData, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     });
 
-    server.post("/", async (req) => {
+    server.post<{ Body: schoolTransaction }>("/", async (req) => {
 
-        const newData = req.body;
 
-        return await newschoolTransaction(newData, db, logger);
+
+        try {
+            const newData = schoolTransactionSchema.omit({ id: true }).parse(req.body);
+
+            return await newschoolTransaction(newData, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
 
     });
 

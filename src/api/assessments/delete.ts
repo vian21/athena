@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { Logger } from "@api/plugins/interfaces";
+import { Id, Logger } from "@api/plugins/interfaces";
 
-export default async function deleteAssessment(assessmentId: number, db: PrismaClient, logger: Logger) {
+export default async function deleteAssessment(assessmentId: Id, db: PrismaClient, logger: Logger) {
     try {
         await db.assessments.delete({
             where: {

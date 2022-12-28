@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 export default async function newsubjectEnrollments(subjectEnrollmentsObject: any, db: PrismaClient, logger: Logger) {
     try {
 
-        await db.subject_enrollment.create({
+        await db.subject_enrollments.create({
             data: subjectEnrollmentsObject,
         })
         return { success: true }

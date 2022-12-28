@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model academic_enrollment {
+model academic_enrollments {
   id                 Int               @id @default(autoincrement())
   student_id         Int?
   academic_period_id Int?
@@ -24,11 +24,11 @@ model academic_periods {
   start_date          DateTime?             @db.Date
   end_date            DateTime?             @db.Date
   type                Int?
-  academic_enrollment academic_enrollment[]
+  academic_enrollments academic_enrollments[]
   accounting          accounting[]
   discipline          discipline[]
   marks               marks[]
-  subject_enrollment  subject_enrollment[]
+  subject_enrollments  subject_enrollments[]
 }
 
 model accounting {
@@ -70,7 +70,7 @@ model discipline {
   @@index([student_id], map: "fk_discipline_student")
 }
 
-model grade {
+model grades {
   id                 Int      @id @default(autoincrement())
   school_id          Int?
   academic_period_id String?  @db.VarChar(20)
@@ -79,7 +79,7 @@ model grade {
   @@index([school_id], map: "fk_grade_schools")
 }
 
-model grading_scale {
+model grading_scales {
   id        Int     @id @default(autoincrement())
   school_id Int
   max       Int
@@ -128,25 +128,25 @@ model schools {
   website             String?               @db.VarChar(255)
   country             String?               @db.VarChar(60)
   address             String?               @db.VarChar(255)
-  grade               grade[]
-  grading_scale       grading_scale[]
+  grade               grades[]
+  grading_scale       grading_scales[]
   school_transactions school_transactions[]
   subjects            subjects[]
 }
 
-model subject_enrollment {
+model subject_enrollments {
   id                 Int              @id @default(autoincrement())
   subject_id         Int
   student_id         Int
   academic_period_id Int
-  finished           Int?
-  academic_periods   academic_periods @relation(fields: [academic_period_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollment_academic_periods")
-  subjects           subjects         @relation(fields: [subject_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollment_subject")
-  users              users            @relation(fields: [student_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollment_students")
+  finished           Boolean? @default(false)
+  academic_periods   academic_periods @relation(fields: [academic_period_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollments_academic_periods")
+  subjects           subjects         @relation(fields: [subject_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollments_subject")
+  users              users            @relation(fields: [student_id], references: [id], onUpdate: Restrict, map: "fk_subject_enrollments_students")
 
-  @@index([academic_period_id], map: "fk_subject_enrollment_academic_periods")
-  @@index([subject_id], map: "fk_subject_enrollment_subject")
-  @@index([student_id], map: "fk_subject_enrollment_students")
+  @@index([academic_period_id], map: "fk_subject_enrollments_academic_periods")
+  @@index([subject_id], map: "fk_subject_enrollments_subject")
+  @@index([student_id], map: "fk_subject_enrollments_students")
 }
 
 model subjects {
@@ -155,7 +155,7 @@ model subjects {
   teacher_id         Int?
   start              DateTime?            @db.Date
   end                DateTime?            @db.Date
-  archived           Boolean?
+  archived           Boolean? @default(false)
   language           String?              @db.VarChar(255)
   subject_code       String?              @db.VarChar(5)
   course_number      String?              @db.VarChar(5)
@@ -165,7 +165,7 @@ model subjects {
   users              users?               @relation(fields: [teacher_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_subject_teachers")
   assessments        assessments[]
   marks              marks[]
-  subject_enrollment subject_enrollment[]
+  subject_enrollments subject_enrollments[]
 
   @@index([school_id], map: "fk_subject_schools")
   @@index([teacher_id], map: "fk_subject_teachers")
@@ -184,11 +184,11 @@ model users {
   password                                 String?               @db.Text
   account_type                             Int
   status                                   Boolean?              @default(false)
-  academic_enrollment                      academic_enrollment[]
+  academic_enrollments                      academic_enrollments[]
   accounting                               accounting[]
   discipline_discipline_invigilatorTousers discipline[]          @relation("discipline_invigilatorTousers")
   discipline_discipline_user_idTousers     discipline[]          @relation("discipline_user_idTousers")
   marks                                    marks[]
-  subject_enrollment                       subject_enrollment[]
+  subject_enrollments                       subject_enrollments[]
   subjects                                 subjects[]
 }

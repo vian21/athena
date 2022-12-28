@@ -1,4 +1,4 @@
-import { Logger } from "@api/plugins/interfaces";
+import { gradingScaleSelect, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
 async function getGradingscales(
@@ -6,13 +6,8 @@ async function getGradingscales(
     logger: Logger
 ): Promise<any> {
     try {
-        return await db.grading_scale.findMany({
-            select: {
-                id: true,
-                min: true,
-                max: true,
-                grade: true
-            }
+        return await db.grading_scales.findMany({
+            select: gradingScaleSelect
         });
 
     } catch (error: any) {
@@ -27,18 +22,11 @@ async function getGradingscale(
     logger: Logger
 ) {
     try {
-        return await db.grading_scale.findUnique({
+        return await db.grading_scales.findUnique({
             where: {
                 id: grading_scaleId,
             },
-            select: {
-                id: true,
-                min: true,
-                max: true,
-                grade: true
-
-
-            },
+            select: gradingScaleSelect
         });
 
 

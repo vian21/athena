@@ -6,6 +6,7 @@ export default async function insertAssessment(assessmentObject: any, db: Prisma
         await db.assessments.create({
             data: assessmentObject,
         })
+
         return { success: true }
     }
     catch (error: any) {

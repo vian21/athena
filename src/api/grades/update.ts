@@ -1,9 +1,9 @@
-import { Logger } from "@api/plugins/interfaces";
+import { Id, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-async function updateGrades(gradeId: number, newData: object, db: PrismaClient, logger: Logger) {
+async function updateGrade(gradeId: Id, newData: object, db: PrismaClient, logger: Logger) {
     try {
-        await db.grade.update({
+        await db.grades.update({
             where: {
                 id: gradeId
             },
@@ -18,5 +18,5 @@ async function updateGrades(gradeId: number, newData: object, db: PrismaClient, 
     }
 }
 export {
-    updateGrades
+    updateGrade
 }

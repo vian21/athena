@@ -1,4 +1,4 @@
-import { Logger } from "@api/plugins/interfaces";
+import { Id, assessmentSelect, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
 async function getAssessments(
@@ -7,11 +7,7 @@ async function getAssessments(
 ): Promise<any> {
     try {
         return await db.assessments.findMany({
-            select: {
-                id: true,
-                subject_id: true,
-                type: true
-            }
+            select: assessmentSelect
         });
 
     } catch (error: any) {
@@ -23,7 +19,7 @@ async function getAssessments(
 
 
 async function getAssessment(
-    schoolId: number,
+    schoolId: Id,
     db: PrismaClient,
     logger: Logger
 ) {
@@ -32,12 +28,7 @@ async function getAssessment(
             where: {
                 id: schoolId,
             },
-            select: {
-                id: true,
-                subject_id: true,
-                type: true,
-
-            },
+            select: assessmentSelect
         });
 
     } catch (error: any) {

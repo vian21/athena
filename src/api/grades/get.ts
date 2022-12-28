@@ -1,4 +1,4 @@
-import { Logger } from "@api/plugins/interfaces";
+import { gradeSelect, Id, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
 async function getGrades(
@@ -6,13 +6,8 @@ async function getGrades(
     logger: Logger
 ): Promise<any> {
     try {
-        return await db.grade.findMany({
-            select: {
-                id: true,
-                school_id: true,
-                academic_period_id: true,
-                schools: true,
-            }
+        return await db.grades.findMany({
+            select: gradeSelect
         });
 
 
@@ -25,21 +20,16 @@ async function getGrades(
 
 
 async function getGrade(
-    grade_id: number,
+    grade_id: Id,
     db: PrismaClient,
     logger: Logger
 ) {
     try {
-        return await db.grade.findUnique({
+        return await db.grades.findUnique({
             where: {
                 id: grade_id,
             },
-            select: {
-                id: true,
-                school_id: true,
-                academic_period_id: true,
-                schools: true,
-            },
+            select: gradeSelect
         });
 
     } catch (error: any) {

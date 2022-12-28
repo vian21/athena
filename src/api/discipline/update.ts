@@ -1,9 +1,9 @@
-import { Logger } from "@api/plugins/interfaces";
+import { Id, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-export default async function updateDiscipline(disciplineId: number, newData: object, db: PrismaClient, logger: Logger) {
+export default async function updateDiscipline(disciplineId: Id, newData: object, db: PrismaClient, logger: Logger) {
     try {
-        const updateDiscipline = await db.discipline.update({
+        await db.discipline.update({
             where: {
                 id: disciplineId
             },
@@ -15,6 +15,6 @@ export default async function updateDiscipline(disciplineId: number, newData: ob
     } catch (error: any) {
         logger.log(error.message);
 
-        return { error: "Could not update discipline Record" };
+        return { error: "Could not update discipline Record!" };
     }
 }

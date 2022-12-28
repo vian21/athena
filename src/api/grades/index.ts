@@ -3,20 +3,12 @@ import { FastifyInstance } from "fastify";
 import db from "@api/plugins/db";
 import logger from "@api/plugins/logger";
 
-import { getGrades, getGrade } from "./get";
-import { updateGrades } from "./update";
+import { IParamsId, IParamsIdSchema, gradeSchema, Grade } from "@api/plugins/interfaces";
 
+import { getGrades, getGrade } from "./get";
+import { updateGrade } from "./update";
 import newGrade from "./insert";
 import deleteGrades from "./delete";
-
-interface grade_id {
-    id: number;
-}
-
-interface Grade {
-    school_id?: number;
-    academic_period_id?: number;
-}
 
 export default function Grades(
     server: FastifyInstance,
@@ -28,37 +20,53 @@ export default function Grades(
         return await getGrades(db, logger);
     });
 
-    server.get<{ Params: grade_id }>("/:id", async (req) => {
-        const gradeId = Number(req.params.id);
+    server.get<{ Params: IParamsId }>("/:id", async (req) => {
+        try {
+            const gradeId = IParamsIdSchema.parse(req.params).id;
 
-        return await getGrade(gradeId, db, logger);
+            return await getGrade(gradeId, db, logger);
+
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     });
 
-    server.delete("/:id", async (req) => {
+    server.delete<{ Params: IParamsId }>("/:id", async (req) => {
+        try {
+            const gradeId = IParamsIdSchema.parse(req.params).id;
 
-        const gradeId = Number(req.params.id);
-        if (isNaN(gradeId)) return {}
+            return await deleteGrades(gradeId, db, logger);
 
-        return await deleteGrades(gradeId, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     })
 
-    server.patch<{ Body: Grade }>("/:id", async (req) => {
+    server.patch<{ Params: IParamsId, Body: Grade }>("/:id", async (req) => {
+        try {
+            const gradeId = IParamsIdSchema.parse(req.params).id;
+            const newData = gradeSchema.omit({ id: true }).parse(req.body);
 
-        const gradeId = Number(req.params.id);
-        const newData = req.body;
+            return await updateGrade(gradeId, newData, db, logger);
 
-        if (isNaN(gradeId) || newData instanceof Grade) return {}
-
-        return await updateGrades(gradeId, newData, db, logger);
-
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     });
 
-    server.post("/", async (req) => {
+    server.post<{ Params: IParamsId, Body: Grade }>("/", async (req) => {
+        try {
+            const newData = gradeSchema.omit({ id: true }).required({
+                school_id: true,
+                academic_period_id: true
 
-        const newData = req.body;
+            }).parse(req.body);
 
-        return await newGrade(newData, db, logger);
+            return await newGrade(newData, db, logger);
 
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     });
 
     done();

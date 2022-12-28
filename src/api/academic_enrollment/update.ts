@@ -1,4 +1,4 @@
-import { Logger } from "@api/plugins/interfaces";
+import { Id, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 /*
  * 
@@ -10,9 +10,9 @@ import { PrismaClient } from "@prisma/client";
  * @returns {object} - success or error object
  *
  */
-async function updateAcademicEnrollment(enrollmentId: number, newData: object, db: PrismaClient, logger: Logger) {
+export default async function updateAcademicEnrollment(enrollmentId: Id, newData: object, db: PrismaClient, logger: Logger) {
     try {
-        await db.academic_enrollment.update({
+        await db.academic_enrollments.update({
             where: {
                 id: enrollmentId
             },
@@ -25,7 +25,4 @@ async function updateAcademicEnrollment(enrollmentId: number, newData: object, d
 
         return {};
     }
-}
-export {
-    updateAcademicEnrollment
 }

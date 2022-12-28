@@ -22,18 +22,20 @@ export default function subjects(
     });
 
     server.get<{ Params: IParamsId }>("/:id", async (req) => {
-        const subjectId = Number(req.params.id);
-        if (isNaN(subjectId)) return errorMessage
+        try {
+            const subjectId = subjectSchema.required({ id: true }).parse(req.params.id).id;
+            return await getSubject(subjectId, db, logger);
 
-        return await getSubject(subjectId, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     });
 
     server.patch<{ Params: IParamsId, Body: Subject }>("/:id", async (req) => {
-        const subjectId = Number(req.params.id);
-
-        if (isNaN(subjectId)) return errorMessage
 
         try {
+            const subjectId = subjectSchema.required({ id: true }).parse(req.params.id).id;
+
             //parse the body to make sure it matches the schema
             const newData = subjectSchema.parse(req.body);
 
@@ -47,7 +49,7 @@ export default function subjects(
     server.post<{ Params: IParamsId, Body: Subject }>("/", async (req) => {
 
         try {
-            const newData = subjectSchema.required({
+            const newData = subjectSchema.omit({ id: true }).required({
                 school_id: true,
                 teacher_id: true,
                 name: true,
@@ -61,11 +63,15 @@ export default function subjects(
     })
 
     server.delete<{ Params: IParamsId }>("/:id", async (req) => {
-        const subjectId = Number(req.params.id)
 
-        if (isNaN(subjectId)) return errorMessage
+        try {
+            const subjectId = subjectSchema.required({ id: true }).parse(req.params.id).id;
 
-        return await deleteSubject(subjectId, db, logger)
+            return await deleteSubject(subjectId, db, logger)
+
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     })
 
     done();
