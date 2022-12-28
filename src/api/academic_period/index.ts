@@ -1,6 +1,8 @@
 import db from "@api/plugins/db";
 import logger from "@api/plugins/logger";
 
+import { IParamsId, IParamsIdSchema, AcademicPeriod, academicPeriodSchema } from "@api/plugins/interfaces";
+
 import { getAcademicPeriods, getAcademicPeriod } from "./get";
 import { updateAcademicPeriod } from "./update";
 
@@ -10,9 +12,7 @@ import newAcademicPeriod from "./insert";
 
 import { FastifyInstance } from "fastify";
 
-interface AcademicsId {
-    id: number;
-}
+
 
 export default function academicPeriods(
     server: FastifyInstance,
@@ -24,36 +24,58 @@ export default function academicPeriods(
         return await getAcademicPeriods(db, logger);
     });
 
-    server.get<{ Params: AcademicsId }>("/:id", async (req) => {
-        const periodId = Number(req.params.id);
-        if (isNaN(periodId)) return {}
+    server.get<{ Params: IParamsId }>("/:id", async (req) => {
 
-        return await getAcademicPeriod(periodId, db, logger);
+        try {
+            const id = IParamsIdSchema.parse(req.params).id;
+            return await getAcademicPeriod(id, db, logger);
+
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     });
+
+
 
     server.delete("/:id", async (req) => {
-        const periodId = Number(req.params.id);
+        try {
+            const periodId = IParamsIdSchema.parse(req.params).id;
 
-        if (isNaN(periodId)) return {}
+            return await deleteAcademicPeriod(periodId, db, logger)
 
-        return await deleteAcademicPeriod(periodId, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     })
 
-    server.patch("/:id", async (req) => {
 
-        const PeriodId = Number(req.params.id);
-        const newData = req.body;
+    server.patch<{ Params: IParamsId, Body: AcademicPeriod }>("/:id", async (req) => {
+        try {
+            const periodId = IParamsIdSchema.parse(req.params).id;
+            const newData = academicPeriodSchema.omit({ id: true }).parse(req.body);
 
-        if (isNaN(PeriodId)) return {}
+            return await updateAcademicPeriod(periodId, newData, db, logger);
 
-        return await updateAcademicPeriod(PeriodId, newData, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
 
     });
 
-    server.post("/", async (req, res) => {
-        const newData = req.body;
 
-        return await newAcademicPeriod(newData, db, logger)
+
+    server.post("/", async (req, res) => {
+        try {
+            const newData = academicPeriodSchema.omit({ id: true }).required({
+                start_date: true,
+                end_date: true,
+            }).parse(req.body);
+
+            return await newAcademicPeriod(newData, db, logger)
+
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     })
 
 

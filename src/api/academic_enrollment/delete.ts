@@ -1,16 +1,9 @@
 import { PrismaClient } from "@prisma/client";
-import { Logger } from "@api/plugins/interfaces";
-/*
- * delete a student  enrollments 
- * @param {number} enrollmentid - enrollment number
- * @param {object} db - database object                    
- * @param {object}logger- logging object            
- * @returns {object} - success or error object
- *
- */
-async function deleteAcademicEnrollment(enrollmentId: number, db: PrismaClient, logger: Logger) {
+import { Id, Logger } from "@api/plugins/interfaces";
+
+export default async function deleteAcademicEnrollment(enrollmentId: Id, db: PrismaClient, logger: Logger) {
     try {
-        await db.academic_enrollment.delete({
+        await db.academic_enrollments.delete({
             where: {
                 id: enrollmentId
             }
@@ -20,7 +13,4 @@ async function deleteAcademicEnrollment(enrollmentId: number, db: PrismaClient, 
         logger.log(error.message);
         return { error: "Error deleting academic enrollment" };
     }
-}
-export {
-    deleteAcademicEnrollment
 }

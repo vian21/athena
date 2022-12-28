@@ -1,10 +1,10 @@
 import { Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-export default async function newGrade(GradeObject: any, db: PrismaClient, logger: Logger) {
+export default async function newGrade(GradeObject: object, db: PrismaClient, logger: Logger) {
     try {
 
-        await db.grade.create({
+        await db.grades.create({
             data: GradeObject,
         })
         return { success: true }

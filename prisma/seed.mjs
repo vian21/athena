@@ -15,18 +15,16 @@ const password = () => {
 async function createMainUsers() {
     const hash = password();
 
-    users.map(async (user) => {
+    users.map((user) => {
         user.password = hash;
-
-        await prisma.users.createMany({
-            data: users,
-            skipDuplicates: true,
-        });
-
-        console.log(
-            `✅ Inserted ${users.length} given users into the users table`
-        );
     });
+
+    await prisma.users.createMany({
+        data: users,
+        skipDuplicates: true,
+    });
+
+    console.log(`✅ Inserted ${users.length} given users into the users table`);
 }
 async function createUsers(n = 0) {
     const hash = password();
@@ -63,7 +61,7 @@ async function createGradingScale(n) {
         gradingScale.map(async (interval) => {
             interval.school_id = i + 1;
 
-            await prisma.grading_scale.create({
+            await prisma.grading_scales.create({
                 data: interval,
             });
         });

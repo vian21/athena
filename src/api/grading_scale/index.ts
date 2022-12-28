@@ -1,15 +1,15 @@
+import { FastifyInstance } from "fastify";
+
 import db from "@api/plugins/db";
 import logger from "@api/plugins/logger";
+
+import { IParamsId, IParamsIdSchema, gradingScaleSchema, GradingScale } from "@api/plugins/interfaces"
+
 import { getGradingscales, getGradingscale } from "./get";
 import deletegrading_scale from "./delete";
 import newGradingscale from "./insert";
 import updateGradingscale from "./update";
 
-import { FastifyInstance } from "fastify";
-
-interface grading_scaleId {
-    id: number;
-}
 
 export default function gradingScale(
     server: FastifyInstance,
@@ -21,30 +21,53 @@ export default function gradingScale(
         return await getGradingscales(db, logger)
     });
 
-    server.get<{ Params: grading_scaleId }>("/:id", async (req) => {
-        const grading_scaleId = Number(req.params.id);
-        if (isNaN(grading_scaleId)) return {}
+    server.get<{ Params: IParamsId }>("/:id", async (req) => {
+        try {
+            const id = IParamsIdSchema.parse(req.params).id;
 
-        return await getGradingscale(grading_scaleId, db, logger);
+            return await getGradingscale(id, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
+
     });
-    server.delete("/:id", async (req) => {
-        const gradingscaleId = Number(req.params.id);
-        if (isNaN(gradingscaleId)) return {}
+    server.delete<{ Params: IParamsId }>("/:id", async (req) => {
 
-        return await deletegrading_scale(gradingscaleId, db, logger);
+        try {
+            const id = IParamsIdSchema.parse(req.params).id;
+
+            return await deletegrading_scale(id, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     })
-    server.post("/", async (req) => {
-        const newData = req.body;
+    server.post<{ Params: IParamsId, Body: GradingScale }>("/", async (req) => {
+        try {
+            const newData = gradingScaleSchema.omit({ id: true }).required({
+                school_id: true,
+                max: true,
+                min: true,
+                gpa: true,
+                grade: true,
+            }).parse(req.body);
 
-        return await newGradingscale(newData, db, logger);
+            return await newGradingscale(newData, db, logger);
 
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     });
-    server.patch("/:id", async (req) => {
-        const grading_scaleId = Number(req.params.id);
-        const newData = req.body;
-        if (isNaN(grading_scaleId)) return {}
+    server.patch<{ Params: IParamsId, Body: GradingScale }>("/:id", async (req) => {
+        try {
+            const id = IParamsIdSchema.parse(req.params).id;
 
-        return await updateGradingscale(grading_scaleId, newData, db, logger);
+            const newData = gradingScaleSchema.omit({ id: true }).parse(req.body);
+
+            return await updateGradingscale(id, newData, db, logger);
+
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
 
     });
     done();

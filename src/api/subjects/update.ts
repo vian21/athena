@@ -1,7 +1,7 @@
-import { Logger } from "@api/plugins/interfaces";
+import { Id, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-export default async function updateSubject(subjectId: number, newData: object, db: PrismaClient, logger: Logger) {
+export default async function updateSubject(subjectId: Id, newData: object, db: PrismaClient, logger: Logger) {
     try {
         await db.subjects.update({
             where: {

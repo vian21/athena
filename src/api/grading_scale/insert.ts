@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 export default async function newGradingscale(gradingScaleObject: any, db: PrismaClient, logger: Logger) {
     try {
 
-        await db.grading_scale.create({
+        await db.grading_scales.create({
             data: gradingScaleObject,
         })
         return { success: true }

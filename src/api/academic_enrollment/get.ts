@@ -1,26 +1,13 @@
-import { Logger } from "@api/plugins/interfaces";
+import { academicEnrollmentSelect, Id, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-/*
- * 
- * Fetches all students enrollemnts
- * @param {object} db - database object                     
- * @param {object} logger- logging object            
- * @returns {array} - all academic enrollments
- *
- */
 async function getAcademicEnrollments(
     db: PrismaClient,
     logger: Logger
 ): Promise<any> {
     try {
-        return await db.academic_enrollment.findMany({
-            select: {
-                id: true,
-                student_id: true,
-                academic_period_id: true,
-                grade: true
-            }
+        return await db.academic_enrollments.findMany({
+            select: academicEnrollmentSelect
         });
 
 
@@ -33,31 +20,17 @@ async function getAcademicEnrollments(
     }
 }
 
-/*
- * 
- * Fetches a student enrollemnts
- * @param {number} enrollmentId- enrollmentnumber 
- * @param {object} db - database object                     
- * @param {object} logger- logging object            
- * @returns {object} - enrollment object
- *
- */
 async function getAcademicEnrollment(
-    enrollmentId: number,
+    enrollmentId: Id,
     db: PrismaClient,
     logger: Logger
 ) {
     try {
-        return await db.academic_enrollment.findUnique({
+        return await db.academic_enrollments.findUnique({
             where: {
                 id: enrollmentId,
             },
-            select: {
-                id: true,
-                student_id: true,
-                academic_period_id: true,
-                grade: true
-            },
+            select: academicEnrollmentSelect
         });
 
     } catch (error: any) {

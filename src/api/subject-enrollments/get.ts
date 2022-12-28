@@ -1,4 +1,4 @@
-import { Logger } from "@api/plugins/interfaces";
+import { Id, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
 async function getSubjectEnrollments(
@@ -6,7 +6,7 @@ async function getSubjectEnrollments(
     logger: Logger
 ): Promise<any> {
     try {
-        return await db.subject_enrollment.findMany({
+        return await db.subject_enrollments.findMany({
             select: {
                 id: true,
                 student_id: true,
@@ -25,12 +25,12 @@ async function getSubjectEnrollments(
 
 
 async function getSubjectEnrollment(
-    subject_id: number,
+    subject_id: Id,
     db: PrismaClient,
     logger: Logger
 ) {
     try {
-        return await db.subject_enrollment.findUnique({
+        return await db.subject_enrollments.findUnique({
             where: {
                 id: subject_id,
             },

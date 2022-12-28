@@ -10,7 +10,6 @@ import gradingScale from "./grading_scale";
 import marks from "./marks";
 import assessments from "./assessments";
 import subjects from "./subjects";
-import academics from "./academic_period";
 import accounting from "./accounting";
 import schoolTransactions from "./school_transactions";
 import Grades from "./grades";
@@ -33,7 +32,7 @@ export default function api(server: FastifyInstance, opts: any, done: any) {
     server.register(marks, { prefix: "/marks" });
     server.register(assessments, { prefix: "/assessments" })
     server.register(subjects, { prefix: "/subjects" })
-    server.register(academics, { prefix: "/academics" });
+    server.register(academicPeriods, { prefix: "/academic_period" });
     server.register(accounting, { prefix: "/accounting" });
     server.register(schoolTransactions, { prefix: "/school_transactions" })
     server.register(Grades, { prefix: "/grades" });

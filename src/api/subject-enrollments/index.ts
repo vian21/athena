@@ -1,15 +1,17 @@
+
+import { FastifyInstance } from "fastify";
 import db from "@api/plugins/db";
 import logger from "@api/plugins/logger";
 
+import { IParamsIdSchema, IParamsId, subjectEnrollmentSchema, SubjectEnrollment } from "@api/plugins/interfaces";
+
 import { getSubjectEnrollments, getSubjectEnrollment } from "./get";
 
-import { FastifyInstance } from "fastify";
 import deleteSubjectEnrollment from "./delete";
 import newsubjectEnrollments from "./insert";
+import updateSubjectEnrollment from "./update";
 
-interface subject_id {
-    id: number;
-}
+
 
 export default function subjectEnrollments(
     server: FastifyInstance,
@@ -21,34 +23,50 @@ export default function subjectEnrollments(
         return await getSubjectEnrollments(db, logger);
     });
 
-    server.get<{ Params: subject_id }>("/:id", async (req) => {
-        const subject_id = Number(req.params.id);
-        if (isNaN(subject_id)) return {}
+    server.get<{ Params: IParamsId }>("/:id", async (req) => {
+        try {
+            const subjectId = IParamsIdSchema.parse(req.params).id;
 
-        return await getSubjectEnrollment(subject_id, db, logger);
+            return await getSubjectEnrollment(subjectId, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() };
+        }
     });
 
-    server.delete("/:id", async (req) => {
-        const subject_id = Number(req.params.id);
-        if (isNaN(subject_id)) return {}
+    server.delete<{ Params: IParamsId }>("/:id", async (req) => {
+        try {
+            const subjectId = IParamsIdSchema.required({ id: true }).parse(req.params).id;
 
-        return await deleteSubjectEnrollment(subject_id, db, logger);
+            return await deleteSubjectEnrollment(subjectId, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() };
+        }
     });
 
-    server.patch("/:id", async (req) => {
+    server.patch<{ Params: IParamsId, Body: SubjectEnrollment }>("/:id", async (req) => {
+        try {
+            const subjectId = IParamsIdSchema.required({ id: true }).parse(req.params).id;
+            const newData = subjectEnrollmentSchema.parse(req.body);
 
-        const subject_id = Number(req.params.id);
-        const body = req.body;
-        if (isNaN(subject_id)) return {}
+            return await updateSubjectEnrollment(subjectId, newData, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() };
+        }
 
-        return await updatesubjectEnrollments(subject_id, newData, db, logger);
     });
 
-    server.post("/", async (req) => {
-        //get the params
-        const newData = req.body;
+    server.post<{ Params: IParamsId, Body: SubjectEnrollment }>("/", async (req) => {
+        try {
+            const newData = subjectEnrollmentSchema.omit({ id: true }).required({
+                subject_id: true,
+                student_id: true,
+                academic_period_id: true
+            }).parse(req.body);
 
-        return await newsubjectEnrollments(newData, db, logger);
+            return await newsubjectEnrollments(newData, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() };
+        }
 
     });
 

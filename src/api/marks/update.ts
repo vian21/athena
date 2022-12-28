@@ -1,7 +1,7 @@
-import { Logger } from "@api/plugins/interfaces";
+import { Id, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-async function updateMark(markId: number, newData: object, db: PrismaClient, logger: Logger) {
+async function updateMark(markId: Id, newData: object, db: PrismaClient, logger: Logger) {
     try {
         await db.marks.update({
             where: {

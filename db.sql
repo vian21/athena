@@ -74,15 +74,15 @@ CREATE TABLE subjects(
     CONSTRAINT PRIMARY KEY (subject_id)
 );
 
--- creer la table subject_enrollment
-DROP TABLE IF EXISTS subject_enrollment;
-CREATE TABLE subject_enrollment(
-    subject_enrollment_id INT AUTO_INCREMENT,
+-- creer la table subject_enrollments
+DROP TABLE IF EXISTS subject_enrollments;
+CREATE TABLE subject_enrollments(
+    subject_enrollments_id INT AUTO_INCREMENT,
     subject_id INT NOT NULL, -- FK
     user_id INT NOT NULL, -- student FK
     academic_period_id INT NOT NULL, -- FK
     finished INT,
-    CONSTRAINT PRIMARY KEY (subject_enrollment_id)
+    CONSTRAINT PRIMARY KEY (subject_enrollments_id)
 );
 
 -- creer la table school_transactions
@@ -192,20 +192,20 @@ ALTER TABLE subjects
     FOREIGN KEY(user_id)
     REFERENCES users(user_id);
     
-ALTER TABLE subject_enrollment
-    ADD CONSTRAINT fk_subject_enrollment_subject
+ALTER TABLE subject_enrollments
+    ADD CONSTRAINT fk_subject_enrollments_subject
     FOREIGN KEY(subject_id)
     REFERENCES subjects(subject_id);
     
     
-ALTER TABLE subject_enrollment
-    ADD CONSTRAINT fk_subject_enrollment_users
+ALTER TABLE subject_enrollments
+    ADD CONSTRAINT fk_subject_enrollments_users
     FOREIGN KEY(user_id)
     REFERENCES users(user_id);
 
 
-ALTER TABLE subject_enrollment
-    ADD CONSTRAINT fk_subject_enrollment_academic_periods
+ALTER TABLE subject_enrollments
+    ADD CONSTRAINT fk_subject_enrollments_academic_periods
     FOREIGN KEY(academic_period_id)
     REFERENCES academic_periods(academic_period_id);
     

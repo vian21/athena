@@ -1,16 +1,14 @@
+import { FastifyInstance } from "fastify";
+
 import db from "@api/plugins/db";
 import logger from "@api/plugins/logger";
+
+import { IParamsId, IParamsIdSchema, Assessment, assessmentSchema } from "@api/plugins/interfaces";
 
 import { getAssessments, getAssessment } from "./get";
 import { updateAssessment } from "./update";
 import insertAssessment from "./insert";
 import deleteAssessment from "./delete";
-
-import { FastifyInstance } from "fastify";
-
-interface AssessmentId {
-    id: number;
-}
 
 export default function assessments(
     server: FastifyInstance,
@@ -22,35 +20,52 @@ export default function assessments(
         return await getAssessments(db, logger);
     });
 
-    server.get<{ Params: AssessmentId }>("/:id", async (req) => {
-        const assessmentId = Number(req.params.id);
-        if (isNaN(assessmentId)) return {}
+    server.get<{ Params: IParamsId }>("/:id", async (req) => {
+        try {
+            const id = IParamsIdSchema.parse(req.params).id;
+            return await getAssessment(id, db, logger);
 
-        return await getAssessment(assessmentId, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     });
 
-    server.patch("/:id", async (req) => {
+    server.patch<{ Params: IParamsId, Body: Assessment }>("/:id", async (req) => {
+        try {
+            const assessmentId = IParamsIdSchema.parse(req.params).id;
+            const newData = assessmentSchema.omit({ id: true }).parse(req.body);
 
-        const assessmentId = Number(req.params.id);
-        const newData = req.body;
-        if (isNaN(assessmentId)) return {}
+            return await updateAssessment(assessmentId, newData, db, logger);
 
-        return await updateAssessment(assessmentId, newData, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
 
     });
 
-    server.post("/", async (req) => {
+    server.post<{ Params: IParamsId, Body: Assessment }>("/", async (req) => {
+        try {
+            const newData = assessmentSchema.omit({ id: true }).required({
+                subject_id: true,
+                type: true,
+            }).parse(req.body);
 
-        const newData = req.body;
+            return await insertAssessment(newData, db, logger)
 
-        return await insertAssessment(newData, db, logger)
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     })
 
-    server.delete("/:id", async (req) => {
-        const assessmentId = Number(req.params.id)
-        if (isNaN(assessmentId)) return {}
+    server.delete<{ Params: IParamsId }>("/:id", async (req) => {
+        try {
+            const assessmentId = IParamsIdSchema.parse(req.params).id;
 
-        return await deleteAssessment(assessmentId, db, logger)
+            return await deleteAssessment(assessmentId, db, logger)
+
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     })
 
     done();

@@ -20,32 +20,33 @@ export default function users(
     });
 
     server.get<{ Params: IParamsId }>("/:id", async (req) => {
-        const userId = Number(req.params.id);
+        try {
+            const userId = userSchema.required({ id: true }).parse(req.params.id).id;
 
-        if (isNaN(userId)) return {}
+            return await getUser(userId, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
 
-
-        return await getUser(userId, db, logger);
     });
 
     server.delete<{ Params: IParamsId }>("/:id", async (req) => {
-        const userId = Number(req.params.id);
 
-        if (isNaN(userId)) return {}
+        try {
+            const userId = userSchema.required({ id: true }).parse(req.params.id).id;
 
-        return await deleteUser(userId, db, logger);
+            return await deleteUser(userId, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
+
     })
 
     server.patch<{ Params: IParamsId, Body: User }>("/:id", async (req) => {
-
-        const userId = Number(req.params.id);
-
-
-        if (isNaN(userId)) return { error: "Invalid user id" }
-
         try {
-            //parse the body to make sure it matches the schema
-            const newData = userSchema.parse(req.body);
+            const userId = userSchema.required({ id: true }).parse(req.params.id).id;
+
+            const newData = userSchema.omit({ id: true }).parse(req.body);
 
             return await updateUser(userId, newData, db, logger);
         } catch (error: any) {
@@ -56,7 +57,7 @@ export default function users(
     server.post("/", async (req) => {
 
         try {
-            const newData = userSchema.required({
+            const newData = userSchema.omit({ id: true }).required({
                 first_name: true,
                 last_name: true,
                 DOB: true,

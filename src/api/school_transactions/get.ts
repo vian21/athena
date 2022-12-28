@@ -1,4 +1,4 @@
-import { Logger } from "@api/plugins/interfaces";
+import { Id, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
 async function getSchoolTransactions(
@@ -26,7 +26,7 @@ async function getSchoolTransactions(
 
 
 async function getSchoolTransaction(
-    school_id: number,
+    school_id: Id,
     db: PrismaClient,
     logger: Logger
 ) {

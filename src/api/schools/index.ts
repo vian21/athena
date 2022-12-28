@@ -1,16 +1,15 @@
+import { FastifyInstance } from "fastify";
+
 import db from "@api/plugins/db";
 import logger from "@api/plugins/logger";
 
+import { IParamsId, IParamsIdSchema, schoolSchema, School } from "@api/plugins/interfaces"
+
 import { getSchools, getSchool } from "./get";
 import { updateSchool } from "./update";
-
-import { FastifyInstance } from "fastify";
 import deleteSchool from "./delete";
 import newSchool from "./insert";
 
-interface SchoolId {
-    id: number;
-}
 
 export default function schools(
     server: FastifyInstance,
@@ -22,32 +21,48 @@ export default function schools(
 
     });
 
-    server.get<{ Params: SchoolId }>("/:id", async (req) => {
-        const schoolId = Number(req.params.id);
+    server.get<{ Params: IParamsId }>("/:id", async (req) => {
+        try {
+            const schoolId = IParamsIdSchema.parse(req.params).id;
+            return await getSchool(schoolId, db, logger);
 
-        return await getSchool(schoolId, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     });
 
-    server.delete("/:id", async (req) => {
-        const schoolId = Number(req.params.id);
+    server.delete<{ Params: IParamsId }>("/:id", async (req) => {
+        try {
+            const schoolId = IParamsIdSchema.parse(req.params).id;
+            return await deleteSchool(schoolId, db, logger);
 
-        return await deleteSchool(schoolId, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     })
 
-    server.patch("/:id", async (req) => {
+    server.patch<{ Params: IParamsId, Body: School }>("/:id", async (req) => {
+        try {
+            const schoolId = IParamsIdSchema.parse(req.params).id;
+            const newData = schoolSchema.omit({ id: true }).parse(req.body);
 
-        const schoolId = Number(req.params.id);
-        const newData = req.body;
+            return await updateSchool(schoolId, newData, db, logger);
 
-        return await updateSchool(schoolId, newData, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
 
     });
 
-    server.post("/", async (req, res) => {
+    server.post<{ Params: IParamsId, Body: School }>("/", async (req) => {
+        try {
+            const newData = schoolSchema.omit({ id: true }).parse(req.body);
 
-        const newData = req.body;
+            return await newSchool(newData, db, logger);
 
-        return await newSchool(newData, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
 
     });
 

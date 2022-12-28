@@ -1,8 +1,9 @@
+import { FastifyInstance } from "fastify";
+
 import db from "@api/plugins/db";
 import logger from "@api/plugins/logger";
 
-
-import { FastifyInstance } from "fastify";
+import { IParamsId, IParamsIdSchema, markSchema, Mark } from "@api/plugins/interfaces"
 
 import { getMark, getMarks } from "./get";
 import { updateMark } from "./update";
@@ -11,9 +12,6 @@ import deleteMark from "./delete";
 
 import newMark from "./insert";
 
-interface MarkId {
-    id: number;
-}
 
 export default function marks(
     server: FastifyInstance,
@@ -25,33 +23,49 @@ export default function marks(
         return await getMarks(db, logger);
     });
 
-    server.get<{ Params: MarkId }>("/:id", async (req) => {
-        const markId = Number(req.params.id);
-        if (isNaN(markId)) return {}
+    server.get<{ Params: IParamsId }>("/:id", async (req) => {
+        try {
+            const markId = IParamsIdSchema.parse(req.params).id;
 
-        return await getMark(markId, db, logger);
+            return await getMark(markId, db, logger);
+
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     });
 
-    server.delete("/:id", async (req) => {
-        const markId = Number(req.params.id);
-        if (isNaN(markId)) return {}
+    server.delete<{ Params: IParamsId }>("/:id", async (req) => {
+        try {
+            const markId = IParamsIdSchema.parse(req.params).id;
 
-        return await deleteMark(markId, db, logger);
+            return await deleteMark(markId, db, logger);
+
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     })
 
-    server.patch("/:id", async (req) => {
+    server.patch<{ Params: IParamsId, Body: Mark }>("/:id", async (req) => {
+        try {
+            const markId = IParamsIdSchema.parse(req.params).id;
+            const newData = markSchema.omit({ id: true }).parse(req.body);
 
-        const markId = Number(req.params.id);
-        const newData = req.body;
-        if (isNaN(markId)) return {}
+            return await updateMark(markId, newData, db, logger);
 
-        return await updateMark(markId, newData, db, logger);
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
 
     });
-    server.post("/", async (req) => {
-        const newData = req.body
+    server.post<{ Params: IParamsId, Body: Mark }>("/", async (req) => {
+        try {
+            const newData = markSchema.omit({ id: true }).parse(req.body);
 
-        return await newMark(newData, db, logger)
+            return await newMark(newData, db, logger)
+
+        } catch (error: any) {
+            return { error: error.flatten() }
+        }
     })
 
 

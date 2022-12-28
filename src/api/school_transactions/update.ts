@@ -1,7 +1,7 @@
-import { Logger } from "@api/plugins/interfaces";
+import { Id, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-async function updateSchoolTransaction(transactionId: number, newData: object, db: PrismaClient, logger: Logger) {
+async function updateSchoolTransaction(transactionId: Id, newData: object, db: PrismaClient, logger: Logger) {
     try {
         await db.school_transactions.update({
             where: {

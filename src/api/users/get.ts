@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Logger, userSelect } from "@api/plugins/interfaces";
+import { Id, Logger, userSelect } from "@api/plugins/interfaces";
 
 /*
  * Fetches all users
@@ -31,7 +31,7 @@ async function getUsers(
  *
  */
 async function getUser(
-    userId: number,
+    userId: Id,
     db: PrismaClient,
     logger: Logger
 ) {
