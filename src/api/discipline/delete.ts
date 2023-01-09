@@ -1,12 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 import { Id, Logger } from "@api/plugins/interfaces";
 
-export default async function deleteDiscipline(disciplineId: Id, db: PrismaClient, logger: Logger) {
+export default async function deleteDiscipline(
+    disciplineId: Id,
+    db: PrismaClient,
+    logger: Logger
+) {
     try {
         await db.discipline.delete({
             where: {
-                id: disciplineId
-            }
+                id: disciplineId,
+            },
         });
 
         return { success: true };

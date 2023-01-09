@@ -7,16 +7,14 @@ async function getAcademicEnrollments(
 ): Promise<any> {
     try {
         return await db.academic_enrollments.findMany({
-            select: academicEnrollmentSelect
+            select: academicEnrollmentSelect,
         });
-
-
     } catch (error: any) {
         logger.log(error.message);
 
         return {
-            error: "Error getting academic enrollments"
-        }
+            error: "Error getting academic enrollments",
+        };
     }
 }
 
@@ -30,9 +28,8 @@ async function getAcademicEnrollment(
             where: {
                 id: enrollmentId,
             },
-            select: academicEnrollmentSelect
+            select: academicEnrollmentSelect,
         });
-
     } catch (error: any) {
         logger.log(error);
 
@@ -40,8 +37,4 @@ async function getAcademicEnrollment(
     }
 }
 
-
-export {
-    getAcademicEnrollment,
-    getAcademicEnrollments,
-}
+export { getAcademicEnrollment, getAcademicEnrollments };

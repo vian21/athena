@@ -3,17 +3,21 @@ import { Logger } from "@api/plugins/interfaces";
 /*
  * Delete an academic period
  * @param {number} periodid - enrollment number
- * @param {object} db - database object                    
- * @param {object}logger- logging object            
+ * @param {object} db - database object
+ * @param {object}logger- logging object
  * @returns {object} - success or error object
  *
  */
-export default async function deleteAcademicPeriod(periodId: number, db: PrismaClient, logger: Logger) {
+export default async function deleteAcademicPeriod(
+    periodId: number,
+    db: PrismaClient,
+    logger: Logger
+) {
     try {
         await db.academic_periods.delete({
             where: {
-                id: periodId
-            }
+                id: periodId,
+            },
         });
 
         return { success: true };

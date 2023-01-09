@@ -30,15 +30,14 @@ export default function api(server: FastifyInstance, opts: any, done: any) {
     server.register(subjectEnrollments, { prefix: "/subject_enrollments" });
     server.register(gradingScale, { prefix: "/grading_scale" });
     server.register(marks, { prefix: "/marks" });
-    server.register(assessments, { prefix: "/assessments" })
-    server.register(subjects, { prefix: "/subjects" })
+    server.register(assessments, { prefix: "/assessments" });
+    server.register(subjects, { prefix: "/subjects" });
     server.register(academicPeriods, { prefix: "/academic_period" });
     server.register(accounting, { prefix: "/accounting" });
-    server.register(schoolTransactions, { prefix: "/school_transactions" })
+    server.register(schoolTransactions, { prefix: "/school_transactions" });
     server.register(Grades, { prefix: "/grades" });
     server.register(academicEnrollments, { prefix: "/academic_enrollments" });
     server.register(academicPeriods, { prefix: "/academic_periods" });
-
 
     done();
 }

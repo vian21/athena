@@ -10,13 +10,18 @@ import { PrismaClient } from "@prisma/client";
  * @returns {object} - success or error object
  *
  */
-export default async function updateUser(userId: Id, newData: object, db: PrismaClient, logger: Logger) {
+export default async function updateUser(
+    userId: Id,
+    newData: object,
+    db: PrismaClient,
+    logger: Logger
+) {
     try {
         await db.users.update({
             where: {
-                id: userId
+                id: userId,
             },
-            data: newData
+            data: newData,
         });
 
         return { success: true };

@@ -1,13 +1,18 @@
 import { Id, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-async function updateAssessment(assessmentId: Id, newData: object, db: PrismaClient, logger: Logger) {
+async function updateAssessment(
+    assessmentId: Id,
+    newData: object,
+    db: PrismaClient,
+    logger: Logger
+) {
     try {
         await db.assessments.update({
             where: {
-                id: assessmentId
+                id: assessmentId,
             },
-            data: newData
+            data: newData,
         });
 
         return { success: true };
@@ -17,6 +22,4 @@ async function updateAssessment(assessmentId: Id, newData: object, db: PrismaCli
         return { error: "Cannot update assessments" };
     }
 }
-export {
-    updateAssessment
-}
+export { updateAssessment };

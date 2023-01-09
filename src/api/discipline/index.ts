@@ -3,7 +3,12 @@ import { FastifyInstance } from "fastify";
 import db from "@api/plugins/db";
 import logger from "@api/plugins/logger";
 
-import { IParamsId, IParamsIdSchema, disciplineSchema, Discipline } from "@api/plugins/interfaces";
+import {
+    IParamsId,
+    IParamsIdSchema,
+    disciplineSchema,
+    Discipline,
+} from "@api/plugins/interfaces";
 
 import { getDisciplineRecord, getDisciplineRecords } from "./get";
 import updateDiscipline from "./update";
@@ -16,8 +21,7 @@ export default function discipline(
     done: any
 ) {
     server.get("/", async () => {
-
-        return await getDisciplineRecords(db, logger)
+        return await getDisciplineRecords(db, logger);
     });
 
     server.get<{ Params: IParamsId }>("/:id", async (req) => {
@@ -25,9 +29,8 @@ export default function discipline(
             const id = IParamsIdSchema.parse(req.params).id;
 
             return await getDisciplineRecord(id, db, logger);
-
         } catch (error: any) {
-            return { error: error.flatten() }
+            return { error: error.flatten() };
         }
     });
 
@@ -37,9 +40,8 @@ export default function discipline(
             const newData = disciplineSchema.omit({ id: true }).parse(req.body);
 
             return await updateDiscipline(id, newData, db, logger);
-
         } catch (error: any) {
-            return { error: error.flatten() }
+            return { error: error.flatten() };
         }
     });
 
@@ -48,26 +50,27 @@ export default function discipline(
             const id = IParamsIdSchema.parse(req.params).id;
 
             return await deleteDiscipline(id, db, logger);
-
         } catch (error: any) {
-            return { error: error.flatten() }
+            return { error: error.flatten() };
         }
-    })
+    });
 
-    server.post<{ Params: IParamsId, Body: Discipline }>("/", async (req) => {
+    server.post<{ Params: IParamsId; Body: Discipline }>("/", async (req) => {
         try {
-            const newData = disciplineSchema.omit({ id: true }).required({
-                student_id: true,
-                academic_period_id: true,
-                points: true,
-                infraction: true,
-                invigilator: true,
-            }).parse(req.body);
+            const newData = disciplineSchema
+                .omit({ id: true })
+                .required({
+                    student_id: true,
+                    academic_period_id: true,
+                    points: true,
+                    infraction: true,
+                    invigilator: true,
+                })
+                .parse(req.body);
 
             return await newDiscipline(newData, db, logger);
-
         } catch (error: any) {
-            return { error: error.flatten() }
+            return { error: error.flatten() };
         }
     });
 

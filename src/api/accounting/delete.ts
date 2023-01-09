@@ -1,12 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 import { Logger } from "@api/plugins/interfaces";
 
-export default async function deleteAccounting(accountingId: number, db: PrismaClient, logger: Logger) {
+export default async function deleteAccounting(
+    accountingId: number,
+    db: PrismaClient,
+    logger: Logger
+) {
     try {
         await db.accounting.delete({
             where: {
-                id: accountingId
-            }
+                id: accountingId,
+            },
         });
         return { success: true };
     } catch (error: any) {

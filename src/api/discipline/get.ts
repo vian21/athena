@@ -7,10 +7,8 @@ async function getDisciplineRecords(
 ): Promise<any> {
     try {
         return await db.discipline.findMany({
-            select: disciplineSelect
+            select: disciplineSelect,
         });
-
-
     } catch (error: any) {
         logger.log(error.message);
 
@@ -27,9 +25,8 @@ async function getDisciplineRecord(
             where: {
                 id: schoolId,
             },
-            select: disciplineSelect
+            select: disciplineSelect,
         });
-
     } catch (error: any) {
         logger.log(error);
 
@@ -37,7 +34,4 @@ async function getDisciplineRecord(
     }
 }
 
-export {
-    getDisciplineRecord,
-    getDisciplineRecords
-}
+export { getDisciplineRecord, getDisciplineRecords };

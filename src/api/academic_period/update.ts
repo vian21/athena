@@ -2,21 +2,26 @@ import { Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
 /*
- * update  a student academic period  
+ * update  a student academic period
  * @param {number} periodid - period's id
  * @param {object} newData - object with the field(s) to update and their new values
- * @param {object} db - database object                    
- * @param {object}logger- logging object            
+ * @param {object} db - database object
+ * @param {object}logger- logging object
  * @returns {object} - success or error object
  *
  */
-async function updateAcademicPeriod(periodId: number, newData: object, db: PrismaClient, logger: Logger) {
+async function updateAcademicPeriod(
+    periodId: number,
+    newData: object,
+    db: PrismaClient,
+    logger: Logger
+) {
     try {
         await db.academic_periods.update({
             where: {
-                id: periodId
+                id: periodId,
             },
-            data: newData
+            data: newData,
         });
 
         return { success: true };
@@ -26,6 +31,4 @@ async function updateAcademicPeriod(periodId: number, newData: object, db: Prism
         return {};
     }
 }
-export {
-    updateAcademicPeriod,
-}
+export { updateAcademicPeriod };

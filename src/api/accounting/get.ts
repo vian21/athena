@@ -1,10 +1,7 @@
 import { Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-async function getAccountings(
-    db: PrismaClient,
-    logger: Logger
-): Promise<any> {
+async function getAccountings(db: PrismaClient, logger: Logger): Promise<any> {
     try {
         return await db.accounting.findMany({
             select: {
@@ -15,11 +12,9 @@ async function getAccountings(
                 item: true,
                 academic_period_id: true,
                 academic_periods: true,
-                users: true
-            }
+                users: true,
+            },
         });
-
-
     } catch (error: any) {
         logger.log(error.message);
 
@@ -43,19 +38,13 @@ async function getAccounting(
                 item: true,
                 academic_period_id: true,
                 academic_periods: true,
-                users: true
-
+                users: true,
             },
         });
-
-
     } catch (error: any) {
         logger.log(error);
 
         return {};
     }
 }
-export {
-    getAccountings,
-    getAccounting
-}
+export { getAccountings, getAccounting };

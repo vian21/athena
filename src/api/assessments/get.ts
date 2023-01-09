@@ -1,15 +1,11 @@
 import { Id, assessmentSelect, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-async function getAssessments(
-    db: PrismaClient,
-    logger: Logger
-): Promise<any> {
+async function getAssessments(db: PrismaClient, logger: Logger): Promise<any> {
     try {
         return await db.assessments.findMany({
-            select: assessmentSelect
+            select: assessmentSelect,
         });
-
     } catch (error: any) {
         logger.log(error.message);
 
@@ -17,20 +13,14 @@ async function getAssessments(
     }
 }
 
-
-async function getAssessment(
-    schoolId: Id,
-    db: PrismaClient,
-    logger: Logger
-) {
+async function getAssessment(schoolId: Id, db: PrismaClient, logger: Logger) {
     try {
         return await db.assessments.findUnique({
             where: {
                 id: schoolId,
             },
-            select: assessmentSelect
+            select: assessmentSelect,
         });
-
     } catch (error: any) {
         logger.log(error);
 
@@ -38,7 +28,4 @@ async function getAssessment(
     }
 }
 
-export {
-    getAssessments,
-    getAssessment
-}
+export { getAssessments, getAssessment };

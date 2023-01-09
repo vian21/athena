@@ -13,17 +13,14 @@ async function getSchoolTransactions(
                 date: true,
                 period: true,
                 end_date: true,
-            }
+            },
         });
-
-
     } catch (error: any) {
         logger.log(error.message);
 
         return [];
     }
 }
-
 
 async function getSchoolTransaction(
     school_id: Id,
@@ -43,15 +40,10 @@ async function getSchoolTransaction(
                 end_date: true,
             },
         });
-
-
     } catch (error: any) {
         logger.log(error);
 
         return {};
     }
 }
-export {
-    getSchoolTransactions,
-    getSchoolTransaction
-}
+export { getSchoolTransactions, getSchoolTransaction };

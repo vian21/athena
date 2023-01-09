@@ -17,38 +17,34 @@ export default function accounting(
     done: any
 ) {
     server.get("/", async () => {
-
-        return await getAccountings(db, logger)
+        return await getAccountings(db, logger);
     });
 
     server.get<{ Params: accountingId }>("/:id", async (req) => {
         const accountingId = Number(req.params.id);
-        if (isNaN(accountingId)) return {}
+        if (isNaN(accountingId)) return {};
 
         return await getAccounting(accountingId, db, logger);
     });
 
     server.patch("/:id", async (req) => {
-
         const accountingId = Number(req.params.id);
         const newData = req.body;
-        if (isNaN(accountingId)) return {}
+        if (isNaN(accountingId)) return {};
 
         return await updateAccounting(accountingId, newData, db, logger);
     });
 
     server.delete("/:id", async (req) => {
         const accountingId = Number(req.params.id);
-        if (isNaN(accountingId)) return {}
+        if (isNaN(accountingId)) return {};
 
         return await deleteAccounting(accountingId, db, logger);
-    })
+    });
     server.post("/", async (req) => {
-
         const newData = req.body;
 
         return await newAccounting(newData, db, logger);
-
     });
 
     done();

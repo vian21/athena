@@ -1,15 +1,19 @@
 import { Id, Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-export default async function updateDiscipline(disciplineId: Id, newData: object, db: PrismaClient, logger: Logger) {
+export default async function updateDiscipline(
+    disciplineId: Id,
+    newData: object,
+    db: PrismaClient,
+    logger: Logger
+) {
     try {
         await db.discipline.update({
             where: {
-                id: disciplineId
+                id: disciplineId,
             },
-            data: newData
-        }
-        );
+            data: newData,
+        });
 
         return { success: true };
     } catch (error: any) {

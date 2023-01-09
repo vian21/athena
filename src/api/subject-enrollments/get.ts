@@ -11,18 +11,15 @@ async function getSubjectEnrollments(
                 id: true,
                 student_id: true,
                 academic_period_id: true,
-                finished: true
-            }
+                finished: true,
+            },
         });
-
-
     } catch (error: any) {
         logger.log(error.message);
 
         return [];
     }
 }
-
 
 async function getSubjectEnrollment(
     subject_id: Id,
@@ -38,10 +35,9 @@ async function getSubjectEnrollment(
                 id: true,
                 student_id: true,
                 academic_period_id: true,
-                finished: true
+                finished: true,
             },
         });
-
     } catch (error: any) {
         logger.log(error);
 
@@ -49,7 +45,4 @@ async function getSubjectEnrollment(
     }
 }
 
-export {
-    getSubjectEnrollments,
-    getSubjectEnrollment
-}
+export { getSubjectEnrollments, getSubjectEnrollment };

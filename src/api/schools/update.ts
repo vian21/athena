@@ -1,13 +1,18 @@
 import { Logger } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-async function updateSchool(schoolId: number, newData: object, db: PrismaClient, logger: Logger) {
+async function updateSchool(
+    schoolId: number,
+    newData: object,
+    db: PrismaClient,
+    logger: Logger
+) {
     try {
         await db.schools.update({
             where: {
-                id: schoolId
+                id: schoolId,
             },
-            data: newData
+            data: newData,
         });
 
         return { success: true };
@@ -17,6 +22,4 @@ async function updateSchool(schoolId: number, newData: object, db: PrismaClient,
         return {};
     }
 }
-export {
-    updateSchool
-}
+export { updateSchool };

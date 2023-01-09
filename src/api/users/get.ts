@@ -8,13 +8,9 @@ import { Id, Logger, userSelect } from "@api/plugins/interfaces";
  * @returns {array} - all users
  *
  */
-async function getUsers(
-    db: PrismaClient,
-    logger: Logger
-): Promise<any> {
+async function getUsers(db: PrismaClient, logger: Logger): Promise<any> {
     try {
         return await db.users.findMany({ select: userSelect });
-
     } catch (error: any) {
         logger.log(error.message);
 
@@ -30,19 +26,14 @@ async function getUsers(
  * @returns {object} - user object
  *
  */
-async function getUser(
-    userId: Id,
-    db: PrismaClient,
-    logger: Logger
-) {
+async function getUser(userId: Id, db: PrismaClient, logger: Logger) {
     try {
         return await db.users.findUnique({
             where: {
                 id: userId,
             },
-            select: userSelect
+            select: userSelect,
         });
-
     } catch (error: any) {
         logger.log(error);
 
@@ -50,7 +41,4 @@ async function getUser(
     }
 }
 
-export {
-    getUsers,
-    getUser
-}
+export { getUsers, getUser };

@@ -7,9 +7,8 @@ async function getGradingscales(
 ): Promise<any> {
     try {
         return await db.grading_scales.findMany({
-            select: gradingScaleSelect
+            select: gradingScaleSelect,
         });
-
     } catch (error: any) {
         logger.log(error.message);
 
@@ -26,10 +25,8 @@ async function getGradingscale(
             where: {
                 id: grading_scaleId,
             },
-            select: gradingScaleSelect
+            select: gradingScaleSelect,
         });
-
-
     } catch (error: any) {
         logger.log(error);
 
@@ -37,7 +34,4 @@ async function getGradingscale(
     }
 }
 
-export {
-    getGradingscale,
-    getGradingscales
-}
+export { getGradingscale, getGradingscales };

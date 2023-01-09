@@ -1,16 +1,11 @@
 import { Logger, subjectSelect } from "@api/plugins/interfaces";
 import { PrismaClient } from "@prisma/client";
 
-async function getSubjects(
-    db: PrismaClient,
-    logger: Logger
-): Promise<any> {
+async function getSubjects(db: PrismaClient, logger: Logger): Promise<any> {
     try {
         return await db.subjects.findMany({
-            select: subjectSelect
+            select: subjectSelect,
         });
-
-
     } catch (error: any) {
         logger.log(error.message);
 
@@ -18,21 +13,14 @@ async function getSubjects(
     }
 }
 
-
-async function getSubject(
-    subjectId: number,
-    db: PrismaClient,
-    logger: Logger
-) {
+async function getSubject(subjectId: number, db: PrismaClient, logger: Logger) {
     try {
         return await db.subjects.findUnique({
             where: {
                 id: subjectId,
             },
-            select: subjectSelect
+            select: subjectSelect,
         });
-
-
     } catch (error: any) {
         logger.log(error);
 
@@ -40,7 +28,4 @@ async function getSubject(
     }
 }
 
-export {
-    getSubjects,
-    getSubject
-}
+export { getSubjects, getSubject };
