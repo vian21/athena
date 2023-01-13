@@ -8,7 +8,7 @@ import { Id, Logger, userSelect } from "@api/plugins/interfaces";
  * @returns {array} - all users
  *
  */
-async function getUsers(db: PrismaClient, logger: Logger): Promise<any> {
+async function getUsers(db: PrismaClient, logger: Logger) {
     try {
         return await db.users.findMany({ select: userSelect });
     } catch (error: any) {

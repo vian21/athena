@@ -12,7 +12,7 @@
         "start": "node dist/index.js",
         "start:dev": "nodemon dist/index.js",
         "dev": "concurrently \"npm run build:watch\" \"npm run start:dev\"",
-        "test": "jest --passWithNotests --runInBand --no-cache",
+        "test": "jest --passWithNoTests --runInBand --no-cache",
         "test:stage": "npm run test --findRelatedTests",
         "lint": "npx eslint --ext .ts src/**",
         "prepare": "husky install"
@@ -39,6 +39,7 @@
         "nodemon": "^2.0.20",
         "prisma": "^4.8.0",
         "rimraf": "^3.0.2",
+        "ts-jest": "^29.0.5",
         "typescript": "^4.8.4"
     },
     "dependencies": {
