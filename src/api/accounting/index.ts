@@ -4,12 +4,10 @@ import deleteAccounting from "./delete";
 import newAccounting from "./insert";
 import db from "@api/plugins/db";
 import logger from "@api/plugins/logger";
-
+import { accountingSchema, Accounting, IParamsId } from "@api/plugins/interfaces";
 import { FastifyInstance } from "fastify";
 
-interface accountingId {
-    id: number;
-}
+
 
 export default function accounting(
     server: FastifyInstance,
@@ -20,14 +18,14 @@ export default function accounting(
         return await getAccountings(db, logger);
     });
 
-    server.get<{ Params: accountingId }>("/:id", async (req) => {
+    server.get<{ Params: IParamsId }>("/:id", async (req) => {
         const accountingId = Number(req.params.id);
         if (isNaN(accountingId)) return {};
 
         return await getAccounting(accountingId, db, logger);
     });
 
-    server.patch("/:id", async (req) => {
+    server.patch<{ Params: IParamsId, Body: Accounting }>("/:id", async (req) => {
         const accountingId = Number(req.params.id);
         const newData = req.body;
         if (isNaN(accountingId)) return {};
@@ -35,13 +33,13 @@ export default function accounting(
         return await updateAccounting(accountingId, newData, db, logger);
     });
 
-    server.delete("/:id", async (req) => {
+    server.delete<{ Params: IParamsId }>("/:id", async (req) => {
         const accountingId = Number(req.params.id);
         if (isNaN(accountingId)) return {};
 
         return await deleteAccounting(accountingId, db, logger);
     });
-    server.post("/", async (req) => {
+    server.post<{ Body: Accounting }>("/", async (req) => {
         const newData = req.body;
 
         return await newAccounting(newData, db, logger);
