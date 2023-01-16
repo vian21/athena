@@ -24,7 +24,8 @@ export default function subjects(
         try {
             const subjectId = subjectSchema
                 .required({ id: true })
-                .parse(req.params.id).id;
+                .parse(req.params).id;
+
             return await getSubject(subjectId, db, logger);
         } catch (error: any) {
             return { error: error.flatten() };
@@ -35,7 +36,7 @@ export default function subjects(
         try {
             const subjectId = subjectSchema
                 .required({ id: true })
-                .parse(req.params.id).id;
+                .parse(req.params).id;
 
             //parse the body to make sure it matches the schema
             const newData = subjectSchema.parse(req.body);
@@ -68,7 +69,7 @@ export default function subjects(
         try {
             const subjectId = subjectSchema
                 .required({ id: true })
-                .parse(req.params.id).id;
+                .parse(req.params).id;
 
             return await deleteSubject(subjectId, db, logger);
         } catch (error: any) {

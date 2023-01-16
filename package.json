@@ -3,16 +3,13 @@
     "version": "1.0.0",
     "description": "School Management System",
     "main": "dist/index.js",
-    "directories": {
-        "test": "tests"
-    },
     "scripts": {
         "build": "rimraf dist && npx tsc",
         "build:watch": "npm run build -- --watch",
         "start": "node dist/index.js",
         "start:dev": "nodemon dist/index.js",
         "dev": "concurrently \"npm run build:watch\" \"npm run start:dev\"",
-        "test": "jest --passWithNoTests --runInBand --no-cache",
+        "test": "npx jest --passWithNoTests --runInBand --no-cache",
         "test:stage": "npm run test --findRelatedTests",
         "lint": "npx eslint --ext .ts src/**",
         "prepare": "husky install"

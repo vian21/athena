@@ -1,8 +1,11 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
-    preset: "ts-jest",
-    testEnvironment: "node",
-    moduleNameMapper: {
-        "^@api": "<rootDir>/src/api",
+    roots: ["<rootDir>/src", "__tests__"],
+    verbose: true,
+    testMatch: [
+        "**/__tests__/**/*.+(ts|tsx|js)",
+        "**/?(*.)+(spec|test).+(ts|tsx|js)",
+    ],
+    transform: {
+        "^.+\\.(ts|tsx)$": "ts-jest",
     },
 };

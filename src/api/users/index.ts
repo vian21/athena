@@ -22,8 +22,7 @@ export default function users(
         try {
             const userId = userSchema
                 .required({ id: true })
-                .parse(req.params.id).id;
-
+                .parse(req.params).id;
             return await getUser(userId, db, logger);
         } catch (error: any) {
             return { error: error.flatten() };
@@ -34,7 +33,7 @@ export default function users(
         try {
             const userId = userSchema
                 .required({ id: true })
-                .parse(req.params.id).id;
+                .parse(req.params).id;
 
             return await deleteUser(userId, db, logger);
         } catch (error: any) {
@@ -46,7 +45,7 @@ export default function users(
         try {
             const userId = userSchema
                 .required({ id: true })
-                .parse(req.params.id).id;
+                .parse(req.params).id;
 
             const newData = userSchema.omit({ id: true }).parse(req.body);
 
