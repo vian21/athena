@@ -9,7 +9,7 @@
         "start": "node dist/index.js",
         "start:dev": "nodemon dist/index.js",
         "dev": "concurrently \"npm run build:watch\" \"npm run start:dev\"",
-        "test": "vitest",
+        "test": "vitest --passWithNoTests --reporter=verbose ",
         "test:stage": "npm run test --findRelatedTests",
         "lint": "npx eslint --ext .ts src/**",
         "prepare": "husky install"

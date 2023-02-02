@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import { describe, expect, test } from "vitest";
 
-import app from "../../src/app";
+import app from "../src/app";
 
 describe("testing the api", () => {
     app.ready()

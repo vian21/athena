@@ -5,7 +5,7 @@ import logger from "@api/plugins/logger";
 
 import app from "../../src/app";
 
-import { getUsers } from "@api/users/get";
+import { getUsers, getUser } from "@api/users/get";
 
 const request = require("supertest");
 
@@ -18,6 +18,14 @@ describe("Testing GET users", async () => {
     });
 
     test("Testing endpoint GET users", async () => {
-        const response = await request(app.server).get("/api/users").expect(200).expect("Content-Type", /json/);
-    })
+        const response = await request(app.server)
+            .get("/api/users")
+            .expect(200)
+            .expect("Content-Type", /json/);
+    });
+    test("Get one user", async () => {
+        const userId = 6;
+        expect(userId).to.be.a("number");
+        const user = await getUser(userId, db, logger);
+    });
 });

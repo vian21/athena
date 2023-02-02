@@ -6,7 +6,7 @@ let school = () => {
         motto: faker.company.catchPhrase(),
         type: 1,
         email: faker.internet.email(),
-        website: faker.internet.domainName(),
+        website: faker.internet.url(),
         country: faker.address.country(),
         address: faker.address.streetAddress(),
     };
@@ -25,6 +25,7 @@ let user = () => {
         status: true, //true for active, false for inactive
     };
 };
+
 let users = [
     {
         first_name: "Root",

@@ -11,7 +11,7 @@
  * 3. Selection Object: These are objects used to tell prisma which fields to display and which to ignore
  *
  * */
-import { z } from "zod";
+import { nullable, z } from "zod";
 
 //Type definition for the logger which is injected into the routes
 export interface Logger {
@@ -129,14 +129,14 @@ export const subjectEnrollmentSelect = {
 export const schoolSchema = z
     .object({
         id: idSchema.optional(),
-        name: z.string(),
-        motto: z.string().optional(),
-        type: z.number().optional(),
-        email: z.string().email().optional(),
-        logo: z.string().optional(),
-        website: z.string().url().optional(),
-        country: z.string().optional(),
-        address: z.string().optional(),
+        name: z.string().nullable(),
+        motto: z.string().optional().nullable(),
+        type: z.number().optional().nullable(),
+        email: z.string().email().optional().nullable(),
+        logo: z.string().optional().nullable(),
+        website: z.coerce.string().url().optional().nullable(),
+        country: z.string().optional().nullable(),
+        address: z.string().optional().nullable(),
     })
     .strict();
 
