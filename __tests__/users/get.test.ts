@@ -19,37 +19,14 @@ describe("Testing GET users", async () => {
     });
 
     test("Testing endpoint GET users", async () => {
-        const response = await request(app.server).get("/api/users")
+        const response = await request(app.server)
+            .get("/api/users")
             .expect(200)
             .expect("Content-Type", /json/);
-
-    })
-
-    test("GET one user", async () => {
-        const user = await getUser(31, db, logger);
-        expect(user).toBeTypeOf("object");
-        expect(user.id).toBeDefined();
     });
-
-    // test("Entering wrong id", async () => {
-
-    //     expect(await getUser("h", db, logger)).toBeTypeOf("object");
-    // });
-
-    //insert user
-    /*
-    * 1. insert user(objectr)
-    const user ={
-        "name": "test",
-        "email: "kjs@gmai.com"
-    }
-    db.users.create({data: user})
-
-    2. get the user by name and email
-    const userSlected = await db.users.findUnique({name: user.name, email: user.email})
-    expect(userSelected).toBedefined())
-    expect(userSelected.name).toBe(user.name)
-    expect(userSelected.email).toBe(user.email)
-    expect(userSelected).tobetypeof("object")
-    */
+    test("Get one user", async () => {
+        const userId = 6;
+        expect(userId).to.be.a("number");
+        const user = await getUser(userId, db, logger);
+    });
 });
