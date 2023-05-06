@@ -18,7 +18,13 @@ export interface Logger {
   log(message: string): void;
 }
 
-export interface Table
+export interface iDatabaseTable {
+  findMany(fields: object): any;
+  findUnique(criteria: object): any;
+  update(data: object): any;
+  delete(data: object): any;
+  create(data: object): any;
+}
 //interface for record's id in database. change this value if you change the type of `id` in database
 export const idSchema = z.coerce.number().min(1);
 export type Id = z.infer<typeof idSchema>;

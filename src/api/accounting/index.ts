@@ -1,49 +1,45 @@
-import { getAccountings, getAccounting } from "./get";
-import updateAccounting from "./update";
-import deleteAccounting from "./delete";
-import newAccounting from "./insert";
 import db from "@api/plugins/db";
 import logger from "@api/plugins/logger";
-import { accountingSchema, Accounting, IParamsId } from "@api/plugins/interfaces";
+import { accountingSchema, Accounting, IParamsId, accountingSelect } from "@api/plugins/interfaces";
 import { FastifyInstance } from "fastify";
 
-
+import { getUnique, getMany, deleteRows, updateRows, insertRows } from "@api/lib";
 
 export default function accounting(
-    server: FastifyInstance,
-    _opts: object,
-    done: any
+  server: FastifyInstance,
+  _opts: object,
+  done: any
 ) {
-    server.get("/", async () => {
-        return await getAccountings(db, logger);
-    });
+  server.get("/", async () => {
+    return await getMany(accountingSelect, db.accounting, logger);
+  });
 
-    server.get<{ Params: IParamsId }>("/:id", async (req) => {
-        const accountingId = Number(req.params.id);
-        if (isNaN(accountingId)) return {};
+  server.get<{ Params: IParamsId }>("/:id", async (req) => {
+    const accountingId = Number(req.params.id);
+    if (isNaN(accountingId)) return {};
 
-        return await getAccounting(accountingId, db, logger);
-    });
+    return await getUnique(accountingId, accountingSelect, db.accounting, logger);
+  });
 
-    server.patch<{ Params: IParamsId, Body: Accounting }>("/:id", async (req) => {
-        const accountingId = Number(req.params.id);
-        const newData = req.body;
-        if (isNaN(accountingId)) return {};
+  server.patch<{ Params: IParamsId, Body: Accounting }>("/:id", async (req) => {
+    const accountingId = Number(req.params.id);
+    const newData = req.body;
+    if (isNaN(accountingId)) return {};
 
-        return await updateAccounting(accountingId, newData, db, logger);
-    });
+    return await updateRows(accountingId, newData, db.accounting, logger);
+  });
 
-    server.delete<{ Params: IParamsId }>("/:id", async (req) => {
-        const accountingId = Number(req.params.id);
-        if (isNaN(accountingId)) return {};
+  server.delete<{ Params: IParamsId }>("/:id", async (req) => {
+    const accountingId = Number(req.params.id);
+    if (isNaN(accountingId)) return {};
 
-        return await deleteAccounting(accountingId, db, logger);
-    });
-    server.post<{ Body: Accounting }>("/", async (req) => {
-        const newData = req.body;
+    return await deleteRows(accountingId, db.accounting, logger);
+  });
+  server.post<{ Body: Accounting }>("/", async (req) => {
+    const newData = req.body;
 
-        return await newAccounting(newData, db, logger);
-    });
+    return await insertRows(newData, db.accounting, logger);
+  });
 
-    done();
+  done();
 }
