@@ -6,48 +6,52 @@ Documentation: https://vian21.github.io/project-0/
 
 ### Installation
 
-1. ### Clone the repo
+### 1. Clone the repo
 
 ```sh
 git clone https://github.com/vian21/athena.git
 ```
 
-2. ### Install dependencies
+### 2. Install dependencies
 
 ```sh
 npm install
 ```
 
-3. ### Setting Environment variables
-    Create a file called `.env` in the root folder and set `mysql` configurations.
+### 3. Setting Environment variables
+you can use the .env.example file as a template for your own .env file
 
 ```sh
-PORT=3000
-DATABASE_URL = "mysql://USERNAME:PASSWORD@HOST:3306/DBNAME"
+cp .env.example .env
+```
+### 4. Setup docker containers
+We are using docker to run our database and admin interface(adminer)
+
+```sh
+docker compose up -d
 ```
 
-Replace `USERNAME`, `PASSWORD`,`HOST`, `DBNAME` with your mysql server configurations
-
-NOTE: Dont use a `#` in your password
-
-4. ### Setup database
+### 5. Setup database
     We are using Prisma as our ORM(Object Relational Mapper) to provide an abstraction to the database and easy migrations
 
 ```sh
 npx prisma migrate dev --name init
 ```
 
-This will create the database you named in your `.env` file.
+This will connect to the database you named in your `.env` file and seed  it.
 
 **That's it! The app is ready to be run**
 
-4. ### Runnig development server
-
+## Runnig development server
+start database container and adminer
+```sh
+docker compose up -d
+```
 ```sh
 npm run dev
 ```
 
-5. Running production server
+## Running production server
 
 ```
  To be continued ...
