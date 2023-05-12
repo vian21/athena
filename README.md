@@ -19,12 +19,15 @@ npm install
 ```
 
 ### 3. Setting Environment variables
+
 you can use the .env.example file as a template for your own .env file
 
 ```sh
 cp .env.example .env
 ```
+
 ### 4. Setup docker containers
+
 We are using docker to run our database and admin interface(adminer)
 
 ```sh
@@ -32,21 +35,25 @@ docker compose up -d
 ```
 
 ### 5. Setup database
+
     We are using Prisma as our ORM(Object Relational Mapper) to provide an abstraction to the database and easy migrations
 
 ```sh
 npx prisma migrate dev --name init
 ```
 
-This will connect to the database you named in your `.env` file and seed  it.
+This will connect to the database you named in your `.env` file and seed it.
 
 **That's it! The app is ready to be run**
 
 ## Runnig development server
+
 start database container and adminer
+
 ```sh
 docker compose up -d
 ```
+
 ```sh
 npm run dev
 ```

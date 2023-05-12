@@ -5,20 +5,26 @@ import {
   type DefaultSession,
 } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+
 import { env } from "@src/env.mjs";
 
-/**
- * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
- * object and keep type safety.
- *
- * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
- */
+enum UserRole {
+  ROOT,
+  ADMIN,
+  TEACHER,
+  STUDENT
+}
+
+
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
-      id: string;
-      // ...other properties
-      // role: UserRole;
+      id: string; 
+      email:string;     
+      name: string;         
+      role: UserRole;
     } & DefaultSession["user"];
   }
 
@@ -28,18 +34,13 @@ declare module "next-auth" {
   // }
 }
 
-/**
- * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
- *
- * @see https://next-auth.js.org/configuration/options
- */
+
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session: ({ session, user }) => ({
       ...session,
       user: {
         ...session.user,
-        id: user.id,
       },
     }),
   },
@@ -48,15 +49,31 @@ export const authOptions: NextAuthOptions = {
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
     }),
-    /**
-     * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
+    GoogleProvider({
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    }),
+    CredentialsProvider({
+      name: 'Password',
+      credentials: {
+      username: { label: "Username", type: "text", placeholder: "Email" },
+      password: { label: "Password", type: "password", placeholder: "Password" }
+    },
+
+    async authorize(credentials:any, req:any) {
+      // Add logic here to look up the user from the credentials supplied
+      const user = { id: "1", name: "J Smith", email: "jsmith@example.com" , role: 0}
+
+      if (user) {
+        // Any object returned will be saved in `user` property of the JWT
+        return user
+      } else {
+        // If you return null then an error will be displayed advising the user to check their details.
+        return null
+      }
+    }
+
+    })
   ],
 };
 
