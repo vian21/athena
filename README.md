@@ -10,6 +10,7 @@ Documentation: https://vian21.github.io/project-0/
 
 ```sh
 git clone https://github.com/vian21/athena.git
+cd athena
 ```
 
 ### 2. Install dependencies
