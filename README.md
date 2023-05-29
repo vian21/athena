@@ -37,7 +37,7 @@ docker compose up -d
 
 ### 5. Setup database
 
-    We are using Prisma as our ORM(Object Relational Mapper) to provide an abstraction to the database and easy migrations
+We are using Prisma as our ORM(Object Relational Mapper) to provide an abstraction to the database and easy migrations
 
 ```sh
 npx prisma migrate dev --name init
